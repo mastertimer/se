@@ -24,9 +24,6 @@
     <ClCompile Include="mutator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="json.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="mathematics.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -69,15 +66,15 @@
     <ClCompile Include="..\mutator\library\multi_string.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="..\mutator\library\json.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetron.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="mutator.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="json.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="speed.h">
@@ -129,6 +126,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="..\mutator\library\multi_string.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mutator\library\json.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

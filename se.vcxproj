@@ -148,6 +148,7 @@
     <ClCompile Include="..\mutator\library\basic.cpp" />
     <ClCompile Include="..\mutator\library\geometry.cpp" />
     <ClCompile Include="..\mutator\library\graphics.cpp" />
+    <ClCompile Include="..\mutator\library\json.cpp" />
     <ClCompile Include="..\mutator\library\multi_string.cpp" />
     <ClCompile Include="compressed_exchange_data.cpp" />
     <ClCompile Include="exchange_basic.cpp" />
@@ -156,7 +157,6 @@
     <ClCompile Include="exchange_trade.cpp" />
     <ClCompile Include="g_exchange_graph.cpp" />
     <ClCompile Include="g_terminal.cpp" />
-    <ClCompile Include="json.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mathematics.cpp" />
     <ClCompile Include="mediator.cpp" />
@@ -168,6 +168,7 @@
     <ClInclude Include="..\mutator\library\basic.h" />
     <ClInclude Include="..\mutator\library\geometry.h" />
     <ClInclude Include="..\mutator\library\graphics.h" />
+    <ClInclude Include="..\mutator\library\json.h" />
     <ClInclude Include="..\mutator\library\multi_string.h" />
     <ClInclude Include="compressed_exchange_data.h" />
     <ClInclude Include="exchange_basic.h" />
@@ -177,7 +178,6 @@
     <ClInclude Include="g_exchange_graph.h" />
     <ClInclude Include="g_terminal.h" />
     <ClInclude Include="hash.h" />
-    <ClInclude Include="json.h" />
     <ClInclude Include="mathematics.h" />
     <ClInclude Include="mediator.h" />
     <ClInclude Include="mutator.h" />
