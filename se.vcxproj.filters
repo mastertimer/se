@@ -24,9 +24,6 @@
     <ClCompile Include="mutator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="basic.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="graphics.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -69,15 +66,15 @@
     <ClCompile Include="mediator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="..\mutator\library\basic.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetron.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="mutator.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="basic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="graphics.h">
@@ -129,6 +126,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mutator\library\basic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -118,6 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>..\mutator\library</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,6 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>..\mutator\library</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,7 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="basic.cpp" />
+    <ClCompile Include="..\mutator\library\basic.cpp" />
     <ClCompile Include="compressed_exchange_data.cpp" />
     <ClCompile Include="exchange_basic.cpp" />
     <ClCompile Include="exchange_data.cpp" />
@@ -163,7 +165,7 @@
     <ClCompile Include="t_function.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="basic.h" />
+    <ClInclude Include="..\mutator\library\basic.h" />
     <ClInclude Include="compressed_exchange_data.h" />
     <ClInclude Include="exchange_basic.h" />
     <ClInclude Include="exchange_data.h" />
