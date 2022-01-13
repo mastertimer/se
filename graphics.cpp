@@ -51,6 +51,31 @@ struct _color_mixing
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void _picture::save_to_file(std::wstring_view file_name)
+{
+	_stack mem;
+	// BITMAPFILEHEADER
+	mem << 'B' << 'M';   // bfType
+	mem << uint(size.square() * 4 + 54); // bfSize
+	mem << uint(0);      // bfReserved1 bfReserved2
+	mem << uint(54);     // bfOffBits
+	// BITMAPINFOHEADER
+	mem << uint(40);     // biSize
+	mem << uint(size.x); // biWidth
+	mem << int(-size.y); // biHeigh
+	mem << ushort(1);    // biPlanes
+	mem << ushort(32);   // biBitCount
+	mem << uint(0);      // biCompression
+	mem << uint(0);      // biSizeImage
+	mem << uint(0);      // biXPelsPerMeter
+	mem << uint(0);      // biYPelsPerMeter
+	mem << uint(0);      // biClrUsed
+	mem << uint(0);      // biClrImportant
+	mem.push_data(data, size.square() * 4);
+
+	mem.save_to_file(file_name);
+}
+
 void _picture::set_drawing_area(const _iarea& q)
 { 
 	drawing_area = q & size;

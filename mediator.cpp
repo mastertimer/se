@@ -301,6 +301,12 @@ int _recognize::read_prices_from_screen(_supply_and_demand* pr)
 	image.clear(0xFFFFFFFF); // т.к. если окно свернуто, то не грабится
 	pr->time = time(0);
 	image.grab_ecran_oo2(w2);
+/*	static bool first = true;
+	if (first)
+	{
+		first = false;
+		image.save_to_file(L"e:\\test.bmp");
+	}*/
 	find_text13(0xFF0000FF); // синим цветом покупки
 	if (elem.size() != size_offer * 2) return 3;
 	i64 pre = 0;
