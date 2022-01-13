@@ -147,12 +147,12 @@
   <ItemGroup>
     <ClCompile Include="..\mutator\library\basic.cpp" />
     <ClCompile Include="..\mutator\library\geometry.cpp" />
+    <ClCompile Include="..\mutator\library\graphics.cpp" />
     <ClCompile Include="compressed_exchange_data.cpp" />
     <ClCompile Include="exchange_basic.cpp" />
     <ClCompile Include="exchange_data.cpp" />
     <ClCompile Include="exchange_research.cpp" />
     <ClCompile Include="exchange_trade.cpp" />
-    <ClCompile Include="graphics.cpp" />
     <ClCompile Include="g_exchange_graph.cpp" />
     <ClCompile Include="g_terminal.cpp" />
     <ClCompile Include="json.cpp" />
@@ -167,12 +167,12 @@
   <ItemGroup>
     <ClInclude Include="..\mutator\library\basic.h" />
     <ClInclude Include="..\mutator\library\geometry.h" />
+    <ClInclude Include="..\mutator\library\graphics.h" />
     <ClInclude Include="compressed_exchange_data.h" />
     <ClInclude Include="exchange_basic.h" />
     <ClInclude Include="exchange_data.h" />
     <ClInclude Include="exchange_research.h" />
     <ClInclude Include="exchange_trade.h" />
-    <ClInclude Include="graphics.h" />
     <ClInclude Include="g_exchange_graph.h" />
     <ClInclude Include="g_terminal.h" />
     <ClInclude Include="hash.h" />
