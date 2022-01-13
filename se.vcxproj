@@ -168,8 +168,10 @@
     <ClInclude Include="..\mutator\library\basic.h" />
     <ClInclude Include="..\mutator\library\geometry.h" />
     <ClInclude Include="..\mutator\library\graphics.h" />
+    <ClInclude Include="..\mutator\library\hash.h" />
     <ClInclude Include="..\mutator\library\json.h" />
     <ClInclude Include="..\mutator\library\multi_string.h" />
+    <ClInclude Include="..\mutator\library\speed.h" />
     <ClInclude Include="compressed_exchange_data.h" />
     <ClInclude Include="exchange_basic.h" />
     <ClInclude Include="exchange_data.h" />
@@ -177,12 +179,10 @@
     <ClInclude Include="exchange_trade.h" />
     <ClInclude Include="g_exchange_graph.h" />
     <ClInclude Include="g_terminal.h" />
-    <ClInclude Include="hash.h" />
     <ClInclude Include="mathematics.h" />
     <ClInclude Include="mediator.h" />
     <ClInclude Include="mutator.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="speed.h" />
     <ClInclude Include="tetron.h" />
     <ClInclude Include="t_function.h" />
   </ItemGroup>
