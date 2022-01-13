@@ -148,6 +148,7 @@
     <ClCompile Include="..\mutator\library\basic.cpp" />
     <ClCompile Include="..\mutator\library\geometry.cpp" />
     <ClCompile Include="..\mutator\library\graphics.cpp" />
+    <ClCompile Include="..\mutator\library\multi_string.cpp" />
     <ClCompile Include="compressed_exchange_data.cpp" />
     <ClCompile Include="exchange_basic.cpp" />
     <ClCompile Include="exchange_data.cpp" />
@@ -159,7 +160,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mathematics.cpp" />
     <ClCompile Include="mediator.cpp" />
-    <ClCompile Include="multi_string.cpp" />
     <ClCompile Include="mutator.cpp" />
     <ClCompile Include="tetron.cpp" />
     <ClCompile Include="t_function.cpp" />
@@ -168,6 +168,7 @@
     <ClInclude Include="..\mutator\library\basic.h" />
     <ClInclude Include="..\mutator\library\geometry.h" />
     <ClInclude Include="..\mutator\library\graphics.h" />
+    <ClInclude Include="..\mutator\library\multi_string.h" />
     <ClInclude Include="compressed_exchange_data.h" />
     <ClInclude Include="exchange_basic.h" />
     <ClInclude Include="exchange_data.h" />
@@ -179,7 +180,6 @@
     <ClInclude Include="json.h" />
     <ClInclude Include="mathematics.h" />
     <ClInclude Include="mediator.h" />
-    <ClInclude Include="multi_string.h" />
     <ClInclude Include="mutator.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="speed.h" />
