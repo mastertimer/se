@@ -15,6 +15,18 @@ struct _cmd_load_sable_stat : public _g_terminal::_command
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+struct _cmd_test_font : public _g_terminal::_command
+{
+	std::wstring help() override { return L"тестирование шрифта"; }
+
+	void run(_g_terminal* t, std::vector<std::wstring>& parameters) override
+	{
+		test_font(t);
+	}
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 struct _cmd_sad : public _g_terminal::_command
 {
 	std::wstring help() override { return L"спрос и предложение"; }
@@ -152,6 +164,7 @@ _g_terminal::_g_terminal()
 	command.insert({ L"help",  std::unique_ptr<_command>(new _cmd_help) });
 	command.insert({ L"test",  std::unique_ptr<_command>(new _cmd_test) });
 	command.insert({ L"1",     std::unique_ptr<_command>(new _cmd_load_sable_stat) });
+	command.insert({ L"f",     std::unique_ptr<_command>(new _cmd_test_font) });
 	command.insert({ L"sad",   std::unique_ptr<_command>(new _cmd_sad) });
 	command.insert({ L"delta", std::unique_ptr<_command>(new _cmd_delta) });
 	command.insert({ L"line",  std::unique_ptr<_command>(new _cmd_line) });

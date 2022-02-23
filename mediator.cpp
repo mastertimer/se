@@ -294,22 +294,22 @@ int _recognize::test_image(_supply_and_demand* pr)
 int _recognize::read_prices_from_screen(_supply_and_demand* pr)
 {
 	load_mmm();
-	HWND w = FindWindow(0, mmm3.c_str());
+/*	HWND w = FindWindow(0, mmm3.c_str());
 	if (!w) return 1;
 	HWND w2 = FindSubWindow(w, L"InfoPriceTable", L"Сбербанк [МБ ФР: Т+ Акции и ДР] Котировки"); // InfoPriceTable HostWindow
 	if (!w2) return 2;
 	image.clear(0xFFFFFFFF); // т.к. если окно свернуто, то не грабится
-	image.grab_ecran_oo2(w2);
+	image.grab_ecran_oo2(w2);*/
 	pr->time = time(0);
-/*	static bool first = true;
+	static bool first = true;
 	if (first)
 	{
 		first = false;
 		image.load_from_file(L"e:\\test.bmp");
 		image.set_font(L"Gadugi", false);
-		image.text({ 105LL, 15LL }, "0123456789", 16, 0xffff0000);
+		image.text({ 105LL, 15LL }, "ЙЁЩурpygjцфФ", 16, 0xffff0000);
 		image.save_to_file(L"e:\\test2.bmp");
-	}*/
+	}
 //	static int ee = 0;
 //	image.save_to_file(L"e:\\ee"+std::to_wstring(++ee) + L".bmp");
 	find_text13(0xFF0000FF); // синим цветом покупки
@@ -891,3 +891,52 @@ void buy_stock(_tetron* tt, bool buy)
 	zamok_pokupki = false;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+_text_recognising::_text_recognising(std::wstring_view font_name, i64 font_size)
+{
+	std::wstring character_set = L"0123456789.,:;-()[]><=абвгдежзийклмнопрстуфхцчшщъыьэюя"
+		L"АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	_bitmap bm;
+	bm.set_font(font_name, false);
+	wchar_t ss[2] = L"0";
+	_isize max_size;
+	for (auto c : character_set)
+	{
+		ss[0] = c;
+		auto size = bm.size_text(ss, font_size);
+		max_size |= size;
+	}
+	bm.resize(max_size.extended({ 2,2 }));
+	for (auto c : character_set)
+	{
+		ss[0] = c;
+		bm.clear();
+		bm.text({ 1, 1 }, ss, font_size, 0xffffff, 0);
+		if (c == L'4') bm.save_to_file(L"d:\\ee.bmp");
+		bool err = false;
+		for (i64 x = 0; x < max_size.x + 2; x++)
+		{
+			if ((bm.scan_line(0)[x] != 0xFF000000) || (bm.scan_line(max_size.y + 1)[x] != 0xFF000000))
+			{
+				err = true;
+				break;
+			}
+		}
+		for (i64 y = 0; y < max_size.y + 2; y++)
+		{
+			auto sl = bm.scan_line(y);
+			if ((sl[0] != 0xFF000000) || (sl[max_size.x + 1] != 0xFF000000))
+			{
+				err = true;
+				break;
+			}
+		}
+		if (err)
+		{
+			break;
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
