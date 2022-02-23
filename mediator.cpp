@@ -294,14 +294,14 @@ int _recognize::test_image(_supply_and_demand* pr)
 int _recognize::read_prices_from_screen(_supply_and_demand* pr)
 {
 	load_mmm();
-/*	HWND w = FindWindow(0, mmm3.c_str());
+	HWND w = FindWindow(0, mmm3.c_str());
 	if (!w) return 1;
 	HWND w2 = FindSubWindow(w, L"InfoPriceTable", L"Сбербанк [МБ ФР: Т+ Акции и ДР] Котировки"); // InfoPriceTable HostWindow
 	if (!w2) return 2;
 	image.clear(0xFFFFFFFF); // т.к. если окно свернуто, то не грабится
-	image.grab_ecran_oo2(w2);*/
+	image.grab_ecran_oo2(w2);
 	pr->time = time(0);
-	static bool first = true;
+/*	static bool first = true;
 	if (first)
 	{
 		first = false;
@@ -309,7 +309,9 @@ int _recognize::read_prices_from_screen(_supply_and_demand* pr)
 		image.set_font(L"Gadugi", false);
 		image.text({ 105LL, 15LL }, "0123456789", 16, 0xffff0000);
 		image.save_to_file(L"e:\\test2.bmp");
-	}
+	}*/
+//	static int ee = 0;
+//	image.save_to_file(L"e:\\ee"+std::to_wstring(++ee) + L".bmp");
 	find_text13(0xFF0000FF); // синим цветом покупки
 	if (elem.size() != size_offer * 2) return 3;
 	i64 pre = 0;
