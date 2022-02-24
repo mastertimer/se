@@ -60,10 +60,29 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+struct _character_node // узел дерева кодирования символов
+{
+	static const int rc = 4; // максимально количество коллизий
+	uint mask = 0; // битовая маска
+	std::vector<_character_node> dalee; // следующий столбец !!!! СЛОЖНО заменить, т.т. использует сортировку
+	wchar_t c[rc]{}; // возможные символы
+	char f[rc]{}; // соответствующие шрифты
+	i64 nbit[rc]{}; // количество бит в символе
+	int vc = 0; // количество соответствий
+
+	void encode(uint* aa, int vaa, wchar_t cc, char nf, i64 nbitt); // кодирование
+	bool operator!=(uint a) const noexcept { return (mask != a); }  // сравнить
+	bool operator==(uint a) const noexcept { return (mask == a); }  // сравнить
+	bool operator< (uint a) const noexcept { return (mask < a); }   // сравнить
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 struct _text_recognising
 {
 	_text_recognising(std::wstring_view font_name, i64 font_size);
 private:
+	_character_node character_root; // дерево алфавита для распознавания
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

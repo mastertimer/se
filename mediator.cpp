@@ -895,6 +895,7 @@ void buy_stock(_tetron* tt, bool buy)
 
 _text_recognising::_text_recognising(std::wstring_view font_name, i64 font_size)
 {
+	constexpr uchar brightness_threshold = 85;
 	std::wstring character_set = L"0123456789.,:;-()[]><=абвгдежзийклмнопрстуфхцчшщъыьэюя"
 		L"АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	_bitmap bm;
@@ -907,36 +908,60 @@ _text_recognising::_text_recognising(std::wstring_view font_name, i64 font_size)
 		auto size = bm.size_text(ss, font_size);
 		max_size |= size;
 	}
-	bm.resize(max_size.extended({ 2,2 }));
+	if (max_size.y > 32) return;
+	std::vector<uint> bitmask(max_size.x);
+	bm.resize(max_size);
 	for (auto c : character_set)
 	{
 		ss[0] = c;
 		bm.clear();
-		bm.text({ 1, 1 }, ss, font_size, 0xffffff, 0);
-		if (c == L'4') bm.save_to_file(L"d:\\ee.bmp");
-		bool err = false;
-		for (i64 x = 0; x < max_size.x + 2; x++)
+		bm.text({ 0, 0 }, ss, font_size, 0x00ff00, 0);
+		auto size = bm.size_text(ss, font_size);
+		memset32(bitmask.data(), 0, bitmask.size());
+		for (i64 j = size.y - 1; j >= 0; j--)
 		{
-			if ((bm.scan_line(0)[x] != 0xFF000000) || (bm.scan_line(max_size.y + 1)[x] != 0xFF000000))
-			{
-				err = true;
-				break;
-			}
+			_color* sl = bm.scan_line2(j);
+			for (int i = 0; i < size.x; i++) bitmask[i] = (bitmask[i] << 1) + (sl[i].g >= brightness_threshold);
 		}
-		for (i64 y = 0; y < max_size.y + 2; y++)
-		{
-			auto sl = bm.scan_line(y);
-			if ((sl[0] != 0xFF000000) || (sl[max_size.x + 1] != 0xFF000000))
-			{
-				err = true;
-				break;
-			}
-		}
-		if (err)
-		{
-			break;
-		}
+		i64 na = 0;
+		i64 ko = size.x - 1;
+		while ((bitmask[na] == 0) && (na < ko)) na++;
+		while ((bitmask[ko] == 0) && (ko > na)) ko--;
+		character_root.encode(bitmask.data() + na, ko - na + 1, c, 0, 0);
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void _character_node::encode(uint* aa, int vaa, wchar_t cc, char nf, i64 nbitt)
+{
+	if (nbitt == 0) for (int j = 0; j < vaa; j++) nbitt += bit32(aa[j]);
+	if (vaa == 0)
+	{
+		if (vc < rc)
+		{
+			c[vc] = cc;
+			f[vc] = nf;
+			nbit[vc] = nbitt;
+			vc++;
+		}
+		return;
+	}
+	auto fi = std::lower_bound(dalee.begin(), dalee.end(), *aa);
+	i64 n = fi - dalee.begin();
+	bool nena = false;
+	if (fi == dalee.end())
+		nena = true;
+	else
+		if (*fi != *aa)
+			nena = true;
+	if (nena)
+	{
+		_character_node b;
+		b.mask = *aa;
+		dalee.insert(fi, b);
+	}
+	dalee[n].encode(aa + 1, vaa - 1, cc, nf, nbitt);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
