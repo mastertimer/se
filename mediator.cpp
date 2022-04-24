@@ -4,26 +4,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-constexpr wchar_t mmm_file[] = L"..\\..\\data\\mmm.txt";
-
-std::wstring mmm1 = L"1";
-std::wstring mmm2 = L"2";
-std::wstring mmm3 = L"3";
-
 int kkk2 = 1; // количество продаваемых акций
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void load_mmm()
-{
-	static bool first = true;
-	if (!first) return;
-	first = false;
-	_rjson fs((exe_path + mmm_file).c_str());
-	fs.read("mmm1", mmm1);
-	fs.read("mmm2", mmm2);
-	fs.read("mmm3", mmm3);
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,8 +90,7 @@ _recognize::_recognize()
 
 int _recognize::read_okno_soobsenii()
 {
-	load_mmm();
-	HWND w = FindWindow(0, mmm2.c_str());
+	HWND w = FindWindow(0, mmm2().c_str());
 	if (!w) return 1;
 	offset = { 0, 0 };
 	ClientToScreen(w, &offset);
@@ -212,9 +192,8 @@ HWND FindSubWindow(HWND w, const wchar_t* classname, const wchar_t* windowname)
 
 int _recognize::read_tablica_zayavok(int a, int& b)
 {
-	load_mmm();
 	b = 0;
-	HWND w = FindWindow(0, mmm3.c_str());
+	HWND w = FindWindow(0, mmm3().c_str());
 	if (!w) return 1;
 	HWND w2 = FindSubWindow(w, L"InfoMDITableCommon", L"Таблица заявок Основной рынок"); // InfoPriceTable HostWindow
 	if (!w2) return 2;
@@ -234,8 +213,7 @@ int _recognize::read_tablica_zayavok(int a, int& b)
 
 bool _recognize::find_window_prices(RECT* rr)
 {
-	load_mmm();
-	HWND w = FindWindow(0, mmm3.c_str());
+	HWND w = FindWindow(0, mmm3().c_str());
 	if (!w) return false;
 	HWND w2 = FindSubWindow(w, L"InfoPriceTable", L"Сбербанк [МБ ФР: Т+ Акции и ДР] Котировки"); // InfoPriceTable HostWindow
 	if (!w2) return false;
@@ -293,8 +271,7 @@ int _recognize::test_image(_supply_and_demand* pr)
 
 int _recognize::read_prices_from_screen(_supply_and_demand* pr)
 {
-	load_mmm();
-/*	HWND w = FindWindow(0, mmm3.c_str());
+/*	HWND w = FindWindow(0, mmm3().c_str());
 	if (!w) return 1;
 	HWND w2 = FindSubWindow(w, L"InfoPriceTable", L"Сбербанк [МБ ФР: Т+ Акции и ДР] Котировки"); // InfoPriceTable HostWindow
 	if (!w2) return 2;
@@ -611,7 +588,6 @@ int bad_string_to_int(std::wstring& s)
 
 void buy_stock(_tetron* tt, bool buy)
 {
-	load_mmm();
 	int otst_20 = 1; // 20 >= x >= 1, 1 - лучшая цена
 	static int KKK;
 	static bool win8 = false;
@@ -751,7 +727,7 @@ void buy_stock(_tetron* tt, bool buy)
 			n = 1000;
 			return;
 		}
-		if (recognize.find_elem(mmm1) < 0)
+		if (recognize.find_elem(mmm1()) < 0)
 		{
 			n = 1000;
 			return;
@@ -824,7 +800,7 @@ void buy_stock(_tetron* tt, bool buy)
 			n = 1000;
 			return;
 		}
-		if ((recognize.find_elem(mmm1) < 0) || (recognize.find_elem(std::to_wstring(KKK).c_str()) < 0))
+		if ((recognize.find_elem(mmm1()) < 0) || (recognize.find_elem(std::to_wstring(KKK).c_str()) < 0))
 		{
 			n = 1000;
 			return;
@@ -889,79 +865,6 @@ void buy_stock(_tetron* tt, bool buy)
 	delete tt;
 	n = 0;
 	zamok_pokupki = false;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-_decomposed_font::_decomposed_font(std::wstring_view font_name, i64 font_size)
-{
-	constexpr uchar brightness_threshold = 85;
-	std::wstring character_set = L"0123456789.,:;-()[]><=абвгдежзийклмнопрстуфхцчшщъыьэюя"
-		L"АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	_bitmap bm;
-	bm.set_font(font_name, false);
-	wchar_t ss[2] = L"0";
-	_isize max_size;
-	for (auto c : character_set)
-	{
-		ss[0] = c;
-		auto size = bm.size_text(ss, font_size);
-		max_size |= size;
-	}
-	if (max_size.y > 32) return;
-	std::vector<uint> bitmask(max_size.x);
-	bm.resize(max_size);
-	for (auto c : character_set)
-	{
-		ss[0] = c;
-		bm.clear();
-		bm.text({ 0, 0 }, ss, font_size, 0x00ff00, 0);
-		auto size = bm.size_text(ss, font_size);
-		memset32(bitmask.data(), 0, bitmask.size());
-		for (i64 j = size.y - 1; j >= 0; j--)
-		{
-			_color* sl = bm.scan_line2(j);
-			for (int i = 0; i < size.x; i++) bitmask[i] = (bitmask[i] << 1) + (sl[i].g >= brightness_threshold);
-		}
-		i64 na = 0;
-		i64 ko = size.x - 1;
-		while ((bitmask[na] == 0) && (na < ko)) na++;
-		while ((bitmask[ko] == 0) && (ko > na)) ko--;
-		character_root.encode(bitmask.data() + na, ko - na + 1, c, 0, 0);
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void _character_node::encode(uint* aa, int vaa, wchar_t cc, char nf, i64 nbitt)
-{
-	if (nbitt == 0) for (int j = 0; j < vaa; j++) nbitt += bit32(aa[j]);
-	if (vaa == 0)
-	{
-		if (vc < rc)
-		{
-			c[vc] = cc;
-			f[vc] = nf;
-			nbit[vc] = nbitt;
-			vc++;
-		}
-		return;
-	}
-	auto fi = std::lower_bound(dalee.begin(), dalee.end(), *aa);
-	i64 n = fi - dalee.begin();
-	bool nena = false;
-	if (fi == dalee.end())
-		nena = true;
-	else
-		if (*fi != *aa)
-			nena = true;
-	if (nena)
-	{
-		_character_node b;
-		b.mask = *aa;
-		dalee.insert(fi, b);
-	}
-	dalee[n].encode(aa + 1, vaa - 1, cc, nf, nbitt);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

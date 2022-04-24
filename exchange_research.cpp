@@ -4,6 +4,8 @@
 #include "g_terminal.h"
 #include "mediator.h"
 
+#include <set>
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 _delta_offers::_delta_offers(const _offers& a, const _offers& b)
@@ -50,7 +52,53 @@ _delta_supply_and_demand operator-(const _supply_and_demand& a, const _supply_an
 
 void test_font(_g_terminal* t)
 {
-	_decomposed_font ee(L"Gadugi", 16);
+	_bitmap a(20, 20);
+	a.set_font(L"Gadugi", false);
+	u64 ggg[20][9][6];
+	for (i64 i = 0; i < 10; i++)
+	{
+		a.clear(0xffffffff);
+		a.text({ 0, -4 }, std::to_wstring(i), 16, 0xff0000ff);
+		for (i64 y = 0; y < 9; y++)
+			for (i64 x = 0; x < 6; x++)
+				ggg[i][y][x] = a.scan_line(y)[x] & 0xffffff;
+	}
+	for (i64 i = 0; i < 10; i++)
+	{
+		a.clear(0xffffffff);
+		a.text({ 0, -4 }, std::to_wstring(i), 16, 0xffff0000);
+		for (i64 y = 0; y < 9; y++)
+			for (i64 x = 0; x < 6; x++)
+				ggg[10+i][y][x] = a.scan_line(y)[x] & 0xffffff;
+	}
+	for (i64 y = 0; y < 9; y++)
+		for (i64 x = 1; x < 5; x++)
+			for (i64 y2 = 0; y2 < 9; y2++)
+				for (i64 x2 = 1; x2 < 5; x2++)
+				{
+					if (y == y2 && x == x2) continue;
+					std::set<u64> f;
+					for (i64 i = 0; i < 20; i++)
+					{
+						if (ggg[i][y][x] == 0xffffff && ggg[i][y2][x2] == 0xffffff) continue;
+						f.insert((ggg[i][y][x] << 32) + ggg[i][y2][x2]);
+					}
+					if (f.size() == 20)
+						t->print(L"y: " + std::to_wstring(y) + L" x: " + std::to_wstring(x)+ L" y2: " + std::to_wstring(y2) + L" x2: " + std::to_wstring(x2));
+		}
+
+/*	a.set_font(L"Gadugi", false);
+	a.resize({ 100, 100 });
+	a.clear(0xff000000);
+	a.fill_rectangle({ {0, 100}, {50, 100} }, 0xffffffff);
+	a.text({ 0, 0 }, L"0123456789", 16, 0xffff0000);
+	a.text({ 0, 15 }, L"0123456789", 16, 0xff00ff00);
+	a.text({ 0, 30 }, L"0123456789", 16, 0xff0000ff);
+	a.text({ 0, 50 }, L"0123456789", 16, 0xffff0000);
+	a.text({ 0, 60 }, L"0123456789", 16, 0xff00ff00);
+	a.text({ 0, 70 }, L"0123456789", 16, 0xff0000ff);
+	a.text({ 0, 80 }, L"0123456789", 16, 0xff000000);*/
+//	bb.save_to_file(L"e:\\aa.bmp");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

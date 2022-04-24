@@ -4,6 +4,48 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+namespace
+{
+
+	constexpr wchar_t mmm_file[] = L"..\\..\\data\\mmm.txt";
+	bool mmm_loaded = false;
+	std::wstring mmm1s = L"1";
+	std::wstring mmm2s = L"2";
+	std::wstring mmm3s = L"3";
+
+	void load_mmm()
+	{
+		mmm_loaded = true;
+		_rjson fs((exe_path + mmm_file).c_str());
+		fs.read("mmm1", mmm1s);
+		fs.read("mmm2", mmm2s);
+		fs.read("mmm3", mmm3s);
+	}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+std::wstring& mmm1()
+{
+	if (!mmm_loaded) load_mmm();
+	return mmm1s;
+}
+
+std::wstring& mmm2()
+{
+	if (!mmm_loaded) load_mmm();
+	return mmm2s;
+}
+
+std::wstring& mmm3()
+{
+	if (!mmm_loaded) load_mmm();
+	return mmm3s;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 bool _supply_and_demand::operator==(const _supply_and_demand& p) const
 { // *
 	return (demand == p.demand) && (supply == p.supply);

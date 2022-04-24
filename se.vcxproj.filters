@@ -16,6 +16,9 @@
     <Filter Include="Исходные файлы\library">
       <UniqueIdentifier>{9de2e3f1-8188-4e2e-b132-1580dbe576fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\se_library">
+      <UniqueIdentifier>{e2109490-11f5-49e0-a3c6-8f57ed5de830}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,9 +48,6 @@
     <ClCompile Include="compressed_exchange_data.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="exchange_basic.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="exchange_research.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -71,6 +71,12 @@
     </ClCompile>
     <ClCompile Include="..\mutator\library\json.cpp">
       <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="se_library\reading_sad.cpp">
+      <Filter>Исходные файлы\se_library</Filter>
+    </ClCompile>
+    <ClCompile Include="se_library\exchange_basic.cpp">
+      <Filter>Исходные файлы\se_library</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -96,9 +102,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="compressed_exchange_data.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="exchange_basic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="exchange_research.h">
@@ -133,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="..\mutator\library\hash.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="se_library\reading_sad.h">
+      <Filter>Исходные файлы\se_library</Filter>
+    </ClInclude>
+    <ClInclude Include="se_library\exchange_basic.h">
+      <Filter>Исходные файлы\se_library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
