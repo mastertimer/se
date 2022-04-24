@@ -65,6 +65,31 @@ i64 _supply_and_demand::time_minute()
 	return t3.tm_min;
 }
 
+bool _supply_and_demand::valid()
+{
+	if (empty()) return false;
+	int pre = 0;
+	for (i64 i = 0; i < size_offer; i++)
+	{
+		int a = demand[size_offer - 1 - i].price;
+		if (a <= pre) return false;
+		pre = a;
+		if ((a < 1) || (a > 65000)) return false;
+		a = demand[size_offer - 1 - i].number;
+		if ((a < 1) || (a > 2000000000)) return false;
+	}
+	for (i64 i = 0; i < size_offer; i++)
+	{
+		int a = supply[i].price;
+		if (a <= pre) return false;
+		pre = a;
+		if ((a < 1) || (a > 65000)) return false;
+		a = supply[i].number;
+		if ((a < 1) || (a > 2000000000)) return false;
+	}
+	return true;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 _g_terminal& operator << (_g_terminal& t, const _supply_and_demand& sd)

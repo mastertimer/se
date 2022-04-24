@@ -38,19 +38,14 @@ struct _recognize // распознавание с экрана
 	std::vector<_area_string> elem; // элементы
 
 	_recognize(); // конструктор
-	int read_prices_from_screen(_supply_and_demand* pr); // прочитать цены с экрана (0 - без ошибок)
 	int read_vvod_zaya(); // найти и распознать окно ввода заявки. возращает ошибку
 	int read_vnimanie_prodaza(); // найти и распознать окно подтвержения продажи. возращает ошибку
 	int read_vnimanie_pokupka(); // найти и распознать окно подтвержения продажи. возращает ошибку
-	int read_tablica_zayavok(int a, int& b); // количество чисел в таблице заявок
 	int read_okno_soobsenii(); // найти и распознать окно сообщений. возращает ошибку
 	void find_text13(uint c); // найти текст высотой 13 с нужным цветом
 	void find_text13(uint c, int err); // err - погрешность !!! тест скорости, возможно удалить 2 другие !!!
-	void find_red_text13(uint err); // найти красный текст высотой 13
-	bool find_window_prices(RECT* rr); // координаты окна цен
 	int find_elem(std::wstring_view s); // найти текст среди элементов
 	int find_elem_kusok(wstr s); // найти кусок текста среди элементов
-	int test_image(_supply_and_demand* pr); // тестовый поиск на готовой картинке
 
 private:
 	_kusok_bukva bu; // дерево алфавита для распознавания

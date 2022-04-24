@@ -1,6 +1,7 @@
 ﻿#include <chrono>
 
 #include "mediator.h"
+#include "reading_sad.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -143,84 +144,6 @@ int _recognize::read_vvod_zaya()
 	return 0;
 }
 
-struct FindWnd
-{
-	std::wstring class_name_; // имя класса
-	std::wstring window_name_; // имя окна
-	HWND hwnd_{}; // указатель окна
-};
-
-BOOL CALLBACK PoiskOkna(HWND hwnd, LPARAM lParam)
-{
-	FindWnd* aa = (FindWnd*)lParam;
-	wchar_t str[255];
-	GetWindowText(hwnd, str, 255);
-	if (aa->window_name_ != str) return TRUE;
-	GetClassName(hwnd, str, 255);
-	if (aa->class_name_ != str) return TRUE;
-	aa->hwnd_ = hwnd;
-	return FALSE;
-
-
-	//FindWnd* aa = (FindWnd*)lParam;
-	//wchar_t str[255];
-	//wstring s;
-	//GetWindowText(hwnd, str, 255);
-	//if (aa->window_name_ != str) return TRUE;
-	//s = str;
-	//GetClassName(hwnd, str, 255);
-	//s = s + L" : " + str;
-	//MessageBox(0, s.c_str(), L"упс", MB_OK | MB_TASKMODAL);
-
-	//if (aa->class_name_ != str) return TRUE;
-	//aa->hwnd_ = hwnd;
-	//return FALSE;
-
-}
-
-HWND FindSubWindow(HWND w, const wchar_t* classname, const wchar_t* windowname)
-{
-	//		HWND w2 = FindWindowEx(w, 0, L"HostWindow", 0);
-	FindWnd aa;
-	aa.class_name_ = classname;
-	aa.window_name_ = windowname;
-	aa.hwnd_ = 0;
-	//	EnumWindows(fnEnumWindowProc, 0);
-	EnumChildWindows(w, PoiskOkna, (LPARAM)&aa);
-	return aa.hwnd_;
-}
-
-int _recognize::read_tablica_zayavok(int a, int& b)
-{
-	b = 0;
-	HWND w = FindWindow(0, mmm3().c_str());
-	if (!w) return 1;
-	HWND w2 = FindSubWindow(w, L"InfoMDITableCommon", L"Таблица заявок Основной рынок"); // InfoPriceTable HostWindow
-	if (!w2) return 2;
-	RECT rr;
-	GetWindowRect(w2, &rr);
-
-	image.clear(0xFFFFFFFF); // т.к. если окно свернуто, то не грабится
-	image.grab_ecran_oo2(w2);
-	//	image_.SaveToFile(L"err.bmp");
-	find_text13(0xFF0040FF, 10); // синим цветом 
-
-	std::wstring ss_ = std::to_wstring(a);
-	for (uint i = 0; i < elem.size(); i++)
-		if (elem[i].s == ss_) b++;
-	return 0;
-}
-
-bool _recognize::find_window_prices(RECT* rr)
-{
-	HWND w = FindWindow(0, mmm3().c_str());
-	if (!w) return false;
-	HWND w2 = FindSubWindow(w, L"InfoPriceTable", L"Сбербанк [МБ ФР: Т+ Акции и ДР] Котировки"); // InfoPriceTable HostWindow
-	if (!w2) return false;
-	GetWindowRect(w2, rr);
-	return true;
-}
-
 i64 to_int(const std::wstring& s) // преобразование в число с игнорированием нечисловых символов
 {
 	i64 r = 0;
@@ -235,135 +158,6 @@ i64 to_int(const std::wstring& s) // преобразование в число 
 	}
 	if (znak) r = -r;
 	return r;
-}
-
-int _recognize::test_image(_supply_and_demand* pr)
-{
-	find_text13(0xFF0000FF); // синим цветом покупки
-	if (elem.size() != size_offer * 2) return 3;
-	i64 pre = 0;
-	for (int i = 0; i < size_offer; i++)
-	{
-		i64 a = to_int(elem[i * 2i64].s);
-		if (a <= pre) return 4;
-		pre = a;
-		if ((a < 1) || (a > 65000)) return 5;
-		pr->demand[size_offer - 1 - i].price = static_cast<ushort>(a);
-		a = to_int(elem[i * 2i64 + 1i64].s);
-		if ((a < 1) || (a > 2000000000)) return 6;
-		pr->demand[size_offer - 1 - i].number = static_cast<int>(a);
-	}
-	find_red_text13(24); // красным цветом продажи
-	if (elem.size() != size_offer * 2) return 7;
-	for (int i = 0; i < size_offer; i++)
-	{
-		i64 a = to_int(elem[i * 2i64].s);
-		if (a <= pre) return 8;
-		pre = a;
-		if ((a < 1) || (a > 65000)) return 9;
-		pr->supply[i].price = static_cast<ushort>(a);
-		a = to_int(elem[i * 2i64 + 1i64].s);
-		if ((a < 1) || (a > 2000000000)) return 10;
-		pr->supply[i].number = static_cast<int>(a);
-	}
-	return 0;
-}
-
-int _recognize::read_prices_from_screen(_supply_and_demand* pr)
-{
-/*	HWND w = FindWindow(0, mmm3().c_str());
-	if (!w) return 1;
-	HWND w2 = FindSubWindow(w, L"InfoPriceTable", L"Сбербанк [МБ ФР: Т+ Акции и ДР] Котировки"); // InfoPriceTable HostWindow
-	if (!w2) return 2;
-	image.clear(0xFFFFFFFF); // т.к. если окно свернуто, то не грабится
-	image.grab_ecran_oo2(w2);*/
-	pr->time = time(0);
-	static bool first = true;
-	if (first)
-	{
-		first = false;
-		image.load_from_file(L"e:\\test.bmp");
-		image.set_font(L"Gadugi", false);
-		image.text({ 105LL, 15LL }, "ЙЁЩурpygjцфФ", 16, 0xffff0000);
-		image.save_to_file(L"e:\\test2.bmp");
-	}
-//	static int ee = 0;
-//	image.save_to_file(L"e:\\ee"+std::to_wstring(++ee) + L".bmp");
-	find_text13(0xFF0000FF); // синим цветом покупки
-	if (elem.size() != size_offer * 2) return 3;
-	i64 pre = 0;
-	for (i64 i = 0; i < size_offer; i++)
-	{
-		std::wstring swe = elem[i * 2].s;
-		i64 a = to_int(swe);
-		if (a <= pre) return 4;
-		pre = a;
-		if ((a < 1) || (a > 65000)) return 5;
-		pr->demand[size_offer - 1 - i].price = static_cast<ushort>(a);
-		a = to_int(elem[i * 2 + 1].s);
-		if ((a < 1) || (a > 2000000000)) return 6;
-		pr->demand[size_offer - 1 - i].number = static_cast<int>(a);
-	}
-	find_red_text13(24); // красным цветом продажи
-	if (elem.size() != size_offer * 2) return 7;
-	for (i64 i = 0; i < size_offer; i++)
-	{
-		i64 a = to_int(elem[i * 2].s);
-		if (a <= pre) return 8;
-		pre = a;
-		if ((a < 1) || (a > 65000)) return 9;
-		pr->supply[i].price = static_cast<ushort>(a);
-		a = to_int(elem[i * 2 + 1].s);
-		if ((a < 1) || (a > 2000000000)) return 10;
-		pr->supply[i].number = static_cast<int>(a);
-	}
-	return 0;
-}
-
-void _recognize::find_red_text13(uint err)
-{
-	elem.clear();
-	i64 rx = image.size.x;
-	ushort* lin = new ushort[rx];
-	ZeroMemory(lin, sizeof(ushort) * rx);
-	for (i64 j = image.size.y - 1; j >= 0; j--)
-	{
-		uint* sl = image.scan_line(j);
-		i64 first = -1;
-		i64 last = -100;
-		bool norm = true;
-		for (int i = 0; i < rx; i++) {
-			uint cc = sl[i];
-			uint e2 = (255 - ((cc >> 16) & 255)) + ((cc >> 8) & 255) + (cc & 255);
-			lin[i] = (lin[i] << 1) + (e2 <= err);
-			if (lin[i])
-			{
-				if (first < 0)
-				{
-					first = i;
-					norm = false;
-				}
-				last = i;
-				if (lin[i] & 1) norm = true;
-				continue;
-			}
-			if (i - last == 8)
-			{ // КРИТИЧЕСКАЯ РАЗНИЦА!!!!
-				if (!norm)
-				{
-					_area_string aa;
-					ushort s = 0;
-					for (i64 k = first; k <= last; k++) s |= lin[k];
-					aa.area = { {first, last + 1}, {j + 1, j + bit16(s) + 1} };
-					aa.s = rasp_text(lin + first, last - first + 1);
-					elem.push_back(aa);
-					ZeroMemory(lin + first, sizeof(ushort) * (last + 1i64 - first));
-				}
-				first = -1;
-			}
-		}
-	}
-	delete[] lin;
 }
 
 void _recognize::find_text13(uint c, int err)
@@ -608,12 +402,12 @@ void buy_stock(_tetron* tt, bool buy)
 	if (n == 1)
 	{
 		n = 1000;
-		RECT rr;
-		if (!recognize.find_window_prices(&rr)) return;
+		auto rr = find_window_prices();
+		if (!rr) return;
 		if (buy)
-			mouse_move_click(rr.left + 20ll, 6ll + rr.top + 15 * (4ll - otst_20));
+			mouse_move_click(rr->left + 20ll, 6ll + rr->top + 15 * (4ll - otst_20));
 		else
-			mouse_move_click(rr.left + 20ll, 6ll + rr.top + 15 * (37ll + otst_20));
+			mouse_move_click(rr->left + 20ll, 6ll + rr->top + 15 * (37ll + otst_20));
 		mouse_click();
 		n = 2;
 		return;
