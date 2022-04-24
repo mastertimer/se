@@ -893,7 +893,7 @@ void buy_stock(_tetron* tt, bool buy)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-_text_recognising::_text_recognising(std::wstring_view font_name, i64 font_size)
+_decomposed_font::_decomposed_font(std::wstring_view font_name, i64 font_size)
 {
 	constexpr uchar brightness_threshold = 85;
 	std::wstring character_set = L"0123456789.,:;-()[]><=абвгдежзийклмнопрстуфхцчшщъыьэюя"

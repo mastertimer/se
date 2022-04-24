@@ -118,7 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\mutator\library</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\mutator\library;library</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -135,7 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>..\mutator\library</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\mutator\library;library</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

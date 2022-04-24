@@ -50,7 +50,7 @@ _delta_supply_and_demand operator-(const _supply_and_demand& a, const _supply_an
 
 void test_font(_g_terminal* t)
 {
-	_text_recognising ee(L"Gadugi", 16);
+	_decomposed_font ee(L"Gadugi", 16);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

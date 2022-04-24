@@ -78,12 +78,14 @@ struct _character_node // узел дерева кодирования симв�
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct _text_recognising
+struct _decomposed_font
 {
-	_text_recognising(std::wstring_view font_name, i64 font_size);
+	_decomposed_font(std::wstring_view font_name, i64 font_size);
 private:
 	_character_node character_root; // дерево алфавита для распознавания
 };
+
+//find_text();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
