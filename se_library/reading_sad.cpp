@@ -78,7 +78,65 @@ namespace
 			}
 	}
 
-	const std::map<u64, wchar_t> gadugi_16{ {12, L'1'}, {13, L'2'} };
+	const _ixy point1(3, 3); // первая опорная точки
+	const _ixy point2(4, 4); // вторая опорная точки
+
+	std::map<u64, wchar_t> get_map_gadugi_16()
+	{
+		std::map<u64, wchar_t> res;
+		constexpr int font_height = 9;
+		constexpr int font_width = 6;
+		_bitmap kk(font_width, font_height);
+		kk.set_font(L"Gadugi", false);
+		auto sl1 = kk.scan_line2(point1.y);
+		auto sl2 = kk.scan_line2(point2.y);
+		constexpr uint zebra1[font_height] = { 0xfff6f6f6, 0xfff3f3f3, 0xfff1f1f1, 0xffefefef, 0xffededed, 0xffeaeaea,
+			0xffe8e8e8, 0xffe6e6e6, 0xffe4e4e4 };
+		auto write_c = [&](wchar_t c)
+		{
+			u64 key = (u64(sl1[point1.x]) << 32) + sl2[point2.x];
+			key |= 0xff000000ff000000;
+			res.insert({ key, c });
+		};
+		for (int i = 0; i <= 9; i++)
+		{
+			kk.clear(0xffffffff);
+			kk.text({ 0, -4 }, std::to_wstring(i), 16, 0xffff0000);
+			write_c(L'0' + i);
+			kk.clear(0xffffffff);
+			kk.text({ 0, -4 }, std::to_wstring(i), 16, 0xff0000ff);
+			write_c(L'0' + i);
+			for (int y = 0; y < font_height; y++) kk.line({ 0, y }, { font_width - 1, y }, zebra1[y]);
+			kk.text({ 0, -4 }, std::to_wstring(i), 16, 0xff0000ff);
+			write_c(L'0' + i);
+			for (int y = 0; y < font_height; y++) kk.line({ 0, y }, { font_width - 1, y }, zebra1[y]);
+			kk.text({ 0, -4 }, std::to_wstring(i), 16, 0xffff0000);
+			write_c(L'0' + i);
+		}
+		res.insert({ 0xffe4e4f0ffe2a167, L'0' });
+		res.insert({ 0xffee0067ffe8e2ee, L'1' });
+		res.insert({ 0xffe4e4aefff07fce, L'2' });
+		res.insert({ 0xffe4a267ffe2e2ee, L'3' });
+		res.insert({ 0xffe4c48cfff0338b, L'4' });
+		res.insert({ 0xfff3000cffed003f, L'5' });
+		res.insert({ 0xfff3000cffe85b0c, L'6' });
+		res.insert({ 0xffe4a267ffebc2ee, L'7' });
+		res.insert({ 0xffe4e4aeffeda1ee, L'8' });
+		res.insert({ 10, L'9' });
+		res.insert({ 0xffe4e4f0ffe2a1f9, L'0' });
+		res.insert({ 0xff5b00faffa1e2ee, L'1' });
+		res.insert({ 0xffe4e4f5ff337ff2, L'2' });
+		res.insert({ 0xffe4a2faffe2e2ee, L'3' });
+		res.insert({ 0xffe4c4f7ff3333f7, L'4' });
+		res.insert({ 0xff0000ffff5b00fc, L'5' });
+		res.insert({ 0xff0000ffffa15bff, L'6' });
+		res.insert({ 0xffe4a2faff7fc2ee, L'7' });
+		res.insert({ 0xffe4e4f5ff5ba1ee, L'8' });
+		res.insert({ 0xffe4e4f0ff7f33ff, L'9' });
+		return res;
+	}
+
+	const std::map<u64, wchar_t> gadugi_16 = get_map_gadugi_16();
 
 }
 
@@ -100,7 +158,7 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 		if (first)
 		{
 			first = false;
-			image.load_from_file(L"e:\\scan\\ee1.bmp");
+			image.load_from_file(L"e:\\scan\\ee37.bmp");
 		}
 	}
 	i64 sep1 = 0, sep2 = 0;
@@ -113,9 +171,8 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 	constexpr i64 discharge_indent = 3;
 	constexpr i64 indent_from_above = 19;
 	constexpr i64 indent_from_separator = 5;
-	const _ixy point1(3, 3); // первая опорная точки
-	const _ixy point2(4, 4); // первая опорная точки
-	if (sep1 < 40 || sep2-sep1 < 60) goto err; // 10 000 000 должно поместиться
+//	if (sep1 < 40 || sep2-sep1 < 60) goto err; // 10 000 000 должно поместиться
+	if (sep1 < 40 || sep2 - sep1 < 40) goto err; // 10 000 000 должно поместиться
 	pr.time = time(0);
 
 	if (image.size.y < indent_from_above + step_height_line * size_offer * 2 - (step_height_line - font_height))

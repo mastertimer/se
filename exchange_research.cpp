@@ -3,6 +3,7 @@
 #include "exchange_data.h"
 #include "g_terminal.h"
 #include "mediator.h"
+#include "reading_sad.h"
 
 #include <set>
 
@@ -52,7 +53,25 @@ _delta_supply_and_demand operator-(const _supply_and_demand& a, const _supply_an
 
 void test_font(_g_terminal* t)
 {
+/*	constexpr uint zebra2[9] = {0xffeaeaf6, 0xffe8e8f4, 0xffe6e6f2, 0xffe4e4f0, 0xffe2e2ee, 0xffdfdfeb,
+		0xffdddde9, 0xffdbdbe7, 0xffd9d9e5 };
 	_bitmap a(20, 20);
+	a.clear(0xffffffff);
+	a.line({ 0,0 }, { 20,0 }, zebra2[0]);
+	a.line({ 0,1 }, { 20,1 }, zebra2[1]);
+	a.line({ 0,2 }, { 20,2 }, zebra2[2]);
+	a.line({ 0,3 }, { 20,3 }, zebra2[3]);
+	a.line({ 0,4 }, { 20,4 }, zebra2[4]);
+	a.line({ 0,5 }, { 20,5 }, zebra2[5]);
+	a.line({ 0,6 }, { 20,6 }, zebra2[6]);
+	a.line({ 0,7 }, { 20,7 }, zebra2[7]);
+	a.line({ 0,8 }, { 20,8 }, zebra2[8]);
+	a.set_font(L"Gadugi", false);
+	a.text({ 0, -4 }, L"012", 16, 0xffff0000);
+	a.save_to_file(L"e:\\aa.bmp");*/
+
+	read_sad_from_screen();
+/*	_bitmap a(20, 20);
 	a.set_font(L"Gadugi", false);
 	u64 ggg[20][9][6];
 	for (i64 i = 0; i < 10; i++)
@@ -85,7 +104,7 @@ void test_font(_g_terminal* t)
 					}
 					if (f.size() == 20)
 						t->print(L"y: " + std::to_wstring(y) + L" x: " + std::to_wstring(x)+ L" y2: " + std::to_wstring(y2) + L" x2: " + std::to_wstring(x2));
-		}
+		}*/
 
 /*	a.set_font(L"Gadugi", false);
 	a.resize({ 100, 100 });
