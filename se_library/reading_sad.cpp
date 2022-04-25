@@ -12,6 +12,9 @@ namespace
 {
 	constexpr bool debug = true;
 	_bitmap image;
+	_picture last_error_image;
+	constexpr int num_err_files = 10;
+	int recorded_errors = 0;
 
 	struct FindWnd
 	{
@@ -234,9 +237,15 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 	if (pr.valid()) return pr;
 err:
 	if (!debug)
-	{
-
-	}
+		if (image != last_error_image)
+		{
+			last_error_image = image;
+			if (rnd(++recorded_errors) < num_err_files)
+			{
+				auto n = rnd(num_err_files);
+				last_error_image.save_to_file(exe_path + L"sad_error_" + std::to_wstring(n) + L".bmp");
+			}
+		}
 	return std::nullopt;
 }
 
