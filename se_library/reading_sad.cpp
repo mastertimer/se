@@ -4,13 +4,11 @@
 #include <chrono>
 #include <map>
 
-// шрифт цен: "Gadugi" 16
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace
 {
-	constexpr bool debug = true;
+	constexpr bool debug = false;
 	_bitmap image;
 	_picture last_error_image;
 	constexpr int num_err_files = 10;
@@ -125,7 +123,7 @@ namespace
 		res.insert({ 0xfff3000cffe85b0c, L'6' });
 		res.insert({ 0xffe4a267ffebc2ee, L'7' });
 		res.insert({ 0xffe4e4aeffeda1ee, L'8' });
-		res.insert({ 10, L'9' });
+		res.insert({ 0xffe4e4f0ffeb330c, L'9' });
 		res.insert({ 0xffe4e4f0ffe2a1f9, L'0' });
 		res.insert({ 0xff5b00faffa1e2ee, L'1' });
 		res.insert({ 0xffe4e4f5ff337ff2, L'2' });
@@ -161,7 +159,7 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 		if (first)
 		{
 			first = false;
-			image.load_from_file(L"e:\\scan\\ee37.bmp");
+			image.load_from_file(L"E:\\se\\x64\\Debug\\sad_error_8.bmp");
 		}
 	}
 	i64 sep1 = 0, sep2 = 0;
@@ -174,8 +172,7 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 	constexpr i64 discharge_indent = 3;
 	constexpr i64 indent_from_above = 19;
 	constexpr i64 indent_from_separator = 5;
-//	if (sep1 < 40 || sep2-sep1 < 60) goto err; // 10 000 000 должно поместиться
-	if (sep1 < 40 || sep2 - sep1 < 40) goto err; // 10 000 000 должно поместиться
+	if (sep1 < 40 || sep2-sep1 < 60) goto err; // 10 000 000 должно поместиться
 	pr.time = time(0);
 
 	if (image.size.y < indent_from_above + step_height_line * size_offer * 2 - (step_height_line - font_height))
