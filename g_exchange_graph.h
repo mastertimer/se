@@ -44,7 +44,7 @@ inline _basic_statistics research3; // для исследования стат�
 
 void calc_all_prediction(std::function<i64(i64)> o, i64& vv, double& k);
 
-void start_stock();
+void start_se();
 void expand_elements_graph();
 void narrow_graph_elements();
 

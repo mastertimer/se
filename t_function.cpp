@@ -457,7 +457,7 @@ void fun12(_tetron* tt0, _tetron* tt, u64 flags)
 
 void fun13(_tetron* tt0, _tetron* tt, u64 flags)
 {
-	start_stock();
+	start_se();
 }
 
 void fun14(_tetron* tt0, _tetron* tt, u64 flags)

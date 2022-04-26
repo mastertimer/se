@@ -53,7 +53,7 @@ _delta_supply_and_demand operator-(const _supply_and_demand& a, const _supply_an
 
 void exchange_fun1(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 { // общая информация
-	start_stock();
+	start_se();
 	trm.print(L"количество цен: " + std::to_wstring(ed.size()));
 	trm.print(L"размер сжатой записи: " + double_to_wstring(double(ed.info_compressed_size) / ed.size(), 1)); // 20.2
 	const _supply_and_demand* prev = nullptr;
@@ -72,7 +72,7 @@ void exchange_fun1(_g_terminal& trm, const std::vector<std::wstring>& parameters
 void exchange_fun2(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 { // вывод конкретных цен
 	if (parameters.empty()) return;
-	start_stock();
+	start_se();
 	auto n = std::stoll(parameters[0]);
 	if ((n < 0) || (n >= (i64)ed.size())) return;
 	trm << ed[n];
@@ -81,7 +81,7 @@ void exchange_fun2(_g_terminal& trm, const std::vector<std::wstring>& parameters
 void exchange_fun3(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 { // вывод сравнения цен
 	if (parameters.size() != 2) return;
-	start_stock();
+	start_se();
 	auto n1 = std::stoll(parameters[0]);
 	if ((n1 < 0) || (n1 >= (i64)ed.size())) return;
 	auto n2 = std::stoll(parameters[1]);

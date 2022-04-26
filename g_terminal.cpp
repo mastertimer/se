@@ -1,10 +1,12 @@
 ﻿#include "g_terminal.h"
 #include "exchange_research.h"
+#include "exchange_data.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void trm_test(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 {
+	ed.clear();
 	trm.start_timer();
 	trm.stop_timer(std::to_wstring(8));
 	trm.print(L"====");
