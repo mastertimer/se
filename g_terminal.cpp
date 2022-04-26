@@ -3,143 +3,59 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct _cmd_load_sable_stat : public _g_terminal::_command
+void trm_test(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 {
-	std::wstring help() override { return L"статистика цен"; }
-
-	void run(_g_terminal* t, std::vector<std::wstring>& parameters) override
-	{
-		exchange_fun1(t);
-	}
-};
+	trm.start_timer();
+	trm.stop_timer(std::to_wstring(8));
+	trm.print(L"====");
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct _cmd_sad : public _g_terminal::_command
+void trm_clear(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 {
-	std::wstring help() override { return L"спрос и предложение"; }
+	trm.text_clear();
+}
 
-	void run(_g_terminal* t, std::vector<std::wstring>& parameters) override
-	{
-		exchange_fun2(t, parameters);
-	}
-};
+void trm_help(_g_terminal& trm, const std::vector<std::wstring>& parameters)
+{
+	for (auto& i : trm.command) trm.print(i.first + L" - " + i.second.caption);
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct _cmd_delta : public _g_terminal::_command
+void trm_line(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 {
-	std::wstring help() override { return L"разность цен"; }
-
-	void run(_g_terminal* t, std::vector<std::wstring>& parameters) override
+	int iter = 1000000;
+	_picture k1({ 3000, 3000 }, 0xFF000000);
+	_picture k2({ 3000, 3000 }, 0xFF000000);
+	rnd.init(0);
+	trm.start_timer();
+	for (auto i = 0; i < iter; i++)
 	{
-		exchange_fun3(t, parameters);
+		auto x = rnd(3000);
+		auto y1 = rnd(3000);
+		auto y2 = rnd(3000);
+		uint c = rnd(0xFFFFFFFF);
+		k1.line({ x, y1 }, { x, y2 }, c);
 	}
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-struct _cmd_test : public _g_terminal::_command
-{
-	std::wstring help() override { return L"тестирование mask1"; }
-
-	void run(_g_terminal* t, std::vector<std::wstring>& parameters) override
+	trm.stop_timer(L"line");
+	rnd.init(0);
+	trm.start_timer();
+	for (auto i = 0; i < iter; i++)
 	{
-		_area ee{ {0,1.3}, {0,2.2} };
-		_area bb;
-		bb = ee;
-
-		_offer a{ 4, 4 };
-		_offer b{ 4, 4 };
-
-//		t->print(std::to_wstring(sizeof(_offers)));
-		t->print((a<b)?L"<":L"!<");
-
-/*		u64 err = 0;
-		for (u64 i = 0; i < 100000; i++)
-		{
-			u64 k = rnd(256) << rnd(57);
-			if (position1_64_2(k) != position1_64(k)) err++;
-		}
-		t->print(L"err=" + std::to_wstring(err));*/
-
-/*		u64 r = 0;
-		for (u64 i = 0; i < 8; i++)
-		{
-			t->start_timer();
-			for (u64 j = 0; j < 500000; j++)
-			{
-				for (u64 k = 0; k < 256; k++)
-				{
-					r += position1_64(k << (i * 8));
-				}
-			}
-			t->stop_timer(std::to_wstring(i));
-		}
-		t->print(L"r="+std::to_wstring(r));*/
+		auto x = rnd(3000);
+		auto y1 = rnd(3000);
+		auto y2 = rnd(3000);
+		uint c = rnd(0xFFFFFFFF);
+		k2.line2({ x, y1 }, { x, y2 }, c);
 	}
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-struct _cmd_clear : public _g_terminal::_command
-{
-	std::wstring help() override { return L"очищение экрана"; }
-	void run(_g_terminal* t, std::vector<std::wstring>& parameters) override
-	{
-		t->text_clear();
-	}
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-struct _cmd_help : public _g_terminal::_command
-{
-	std::wstring help() override { return L"вывод справки"; }
-	void run(_g_terminal* t, std::vector<std::wstring>& parameters) override
-	{
-		for (auto& i : t->command) t->print(i.first + L" - " + i.second->help());
-	}
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-struct _cmd_line : public _g_terminal::_command
-{
-	std::wstring help() override { return L"тест скорости рисования линий"; }
-	void run(_g_terminal* t, std::vector<std::wstring>& parameters) override
-	{
-		int iter = 1000000;
-		_picture k1({ 3000, 3000 }, 0xFF000000);
-		_picture k2({ 3000, 3000 }, 0xFF000000);
-		rnd.init(0);
-		t->start_timer();
-		for (auto i = 0; i < iter; i++)
-		{
-			auto x = rnd(3000);
-			auto y1 = rnd(3000);
-			auto y2 = rnd(3000);
-			uint c = rnd(0xFFFFFFFF);
-			k1.line({ x, y1 }, { x, y2 }, c);
-		}
-		t->stop_timer(L"line");
-		rnd.init(0);
-		t->start_timer();
-		for (auto i = 0; i < iter; i++)
-		{
-			auto x = rnd(3000);
-			auto y1 = rnd(3000);
-			auto y2 = rnd(3000);
-			uint c = rnd(0xFFFFFFFF);
-			k2.line2({ x, y1 }, { x, y2 }, c);
-		}
-		t->stop_timer(L"line2");
-		if (k1 == k2)
-			t->print(L"картинки равны");
-		else
-			t->print(L"!!НЕСОВПАДЕНИЕ");
-	}
-};
+	trm.stop_timer(L"line2");
+	if (k1 == k2)
+		trm.print(L"картинки равны");
+	else
+		trm.print(L"!!НЕСОВПАДЕНИЕ");
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -148,13 +64,13 @@ _g_terminal::_g_terminal()
 	local_area = { {0, 100}, {0, 100} };
 	key_fokus = true;
 
-	command.insert({ L"clear", std::unique_ptr<_command>(new _cmd_clear) });
-	command.insert({ L"help",  std::unique_ptr<_command>(new _cmd_help) });
-	command.insert({ L"test",  std::unique_ptr<_command>(new _cmd_test) });
-	command.insert({ L"1",     std::unique_ptr<_command>(new _cmd_load_sable_stat) });
-	command.insert({ L"sad",   std::unique_ptr<_command>(new _cmd_sad) });
-	command.insert({ L"delta", std::unique_ptr<_command>(new _cmd_delta) });
-	command.insert({ L"line",  std::unique_ptr<_command>(new _cmd_line) });
+	command.insert({ L"clear", { L"очищение экрана", trm_clear } });
+	command.insert({ L"help", { L"вывод справки", trm_help } });
+	command.insert({ L"test", { L"тестирование разное", trm_test } });
+	command.insert({ L"1", { L"статистика цен", exchange_fun1 } });
+	command.insert({ L"sad", { L"спрос и предложение", exchange_fun2 } });
+	command.insert({ L"delta", { L"разность цен", exchange_fun3 } });
+	command.insert({ L"line",  {L"тест скорости рисования линий", trm_line} });
 }
 
 void _g_terminal::start_timer()
@@ -286,7 +202,7 @@ void _g_terminal::run_cmd()
 		if (auto cc = command.find(command_name); cc != command.end())
 		{
 			start_timer();
-			cc->second->run(this, parameters);
+			cc->second.function(*this, parameters);
 			stop_timer(L"время выполнения");
 		}
 		else

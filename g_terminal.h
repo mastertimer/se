@@ -10,12 +10,11 @@ struct _g_terminal : public _t_go
 {
 	struct _command
 	{
-		virtual std::wstring help() = 0;
-		virtual void run(_g_terminal* t, std::vector<std::wstring>& parameters) = 0;
-		virtual ~_command() {}
+		std::wstring caption;
+		std::function<void(_g_terminal&, const std::vector<std::wstring>&)> function;
 	};
 
-	std::map<std::wstring, std::unique_ptr<_command>> command;
+	std::map<std::wstring, _command> command;
 	std::wstring cmd; // командная строка
 	std::vector<std::wstring> previous_cmd; // база всех вызываемых команд
 

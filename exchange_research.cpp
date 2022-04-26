@@ -51,11 +51,11 @@ _delta_supply_and_demand operator-(const _supply_and_demand& a, const _supply_an
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void exchange_fun1(_g_terminal* t)
+void exchange_fun1(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 { // общая информация
 	start_stock();
-	t->print(L"количество цен: " + std::to_wstring(ed.size()));
-	t->print(L"размер сжатой записи: " + double_to_wstring(double(ed.info_compressed_size) / ed.size(), 1)); // 20.2
+	trm.print(L"количество цен: " + std::to_wstring(ed.size()));
+	trm.print(L"размер сжатой записи: " + double_to_wstring(double(ed.info_compressed_size) / ed.size(), 1)); // 20.2
 	const _supply_and_demand* prev = nullptr;
 	for (auto& i : ed)
 	{
@@ -66,19 +66,19 @@ void exchange_fun1(_g_terminal* t)
 			}
 		prev = &i;
 	}
-	if (prev) *t << *prev;
+	if (prev) trm << *prev;
 }
 
-void exchange_fun2(_g_terminal* t, std::vector<std::wstring>& parameters)
+void exchange_fun2(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 { // вывод конкретных цен
 	if (parameters.empty()) return;
 	start_stock();
 	auto n = std::stoll(parameters[0]);
 	if ((n < 0) || (n >= (i64)ed.size())) return;
-	*t << ed[n];
+	trm << ed[n];
 }
 
-void exchange_fun3(_g_terminal* t, std::vector<std::wstring>& parameters)
+void exchange_fun3(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 { // вывод сравнения цен
 	if (parameters.size() != 2) return;
 	start_stock();
@@ -87,7 +87,7 @@ void exchange_fun3(_g_terminal* t, std::vector<std::wstring>& parameters)
 	auto n2 = std::stoll(parameters[1]);
 	if ((n2 < 0) || (n2 >= (i64)ed.size())) return;
 	auto delta = ed[n2] - ed[n1];
-	*t << delta;
+	trm << delta;
 }
 
 _g_terminal& operator << (_g_terminal& t, const _delta_supply_and_demand& delta)
