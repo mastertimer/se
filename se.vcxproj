@@ -151,7 +151,6 @@
     <ClCompile Include="..\mutator\library\json.cpp" />
     <ClCompile Include="..\mutator\library\multi_string.cpp" />
     <ClCompile Include="compressed_exchange_data.cpp" />
-    <ClCompile Include="exchange_data.cpp" />
     <ClCompile Include="exchange_research.cpp" />
     <ClCompile Include="exchange_trade.cpp" />
     <ClCompile Include="g_exchange_graph.cpp" />
@@ -161,6 +160,7 @@
     <ClCompile Include="mediator.cpp" />
     <ClCompile Include="mutator.cpp" />
     <ClCompile Include="se_library\exchange_basic.cpp" />
+    <ClCompile Include="se_library\exchange_data.cpp" />
     <ClCompile Include="se_library\reading_sad.cpp" />
     <ClCompile Include="tetron.cpp" />
     <ClCompile Include="t_function.cpp" />
@@ -174,7 +174,6 @@
     <ClInclude Include="..\mutator\library\multi_string.h" />
     <ClInclude Include="..\mutator\library\speed.h" />
     <ClInclude Include="compressed_exchange_data.h" />
-    <ClInclude Include="exchange_data.h" />
     <ClInclude Include="exchange_research.h" />
     <ClInclude Include="exchange_trade.h" />
     <ClInclude Include="g_exchange_graph.h" />
@@ -184,6 +183,7 @@
     <ClInclude Include="mutator.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="se_library\exchange_basic.h" />
+    <ClInclude Include="se_library\exchange_data.h" />
     <ClInclude Include="se_library\reading_sad.h" />
     <ClInclude Include="tetron.h" />
     <ClInclude Include="t_function.h" />

@@ -281,10 +281,10 @@ void _g_exchange_graph::ris2(_trans tr, bool final)
 		}
 	}
 	// рисование даты
-	master_bm.text16n(std::max(a.x.min, 0.0) + dex + 10, std::max(a.y.min, 0.0) + 10,
+	master_bm.text16n(std::max(a.x.min, 0.0) + dex + 10, std::max(a.y.min, 0.0) + 11,
 		date_to_ansi_string(mintime).data(), 4, cc2 - 0x80000000, 0xA0000000);
 	// рисование количества элементов
-	master_bm.text16n(std::max(a.x.min, 0.0) + dex + 10, std::max(a.y.min, 0.0) + 60,
+	master_bm.text16n(std::max(a.x.min, 0.0) + dex + 10, std::max(a.y.min, 0.0) + 61,
 		std::to_string(ed.size()).data(), 2, 0x80ff0000, 0xA0000000);
 }
 
