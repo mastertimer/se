@@ -40,6 +40,7 @@ struct _g_terminal;
 void exchange_fun1(_g_terminal& trm, const std::vector<std::wstring>& parameters);
 void exchange_fun2(_g_terminal& trm, const std::vector<std::wstring>& parameters);
 void exchange_fun3(_g_terminal& trm, const std::vector<std::wstring>& parameters);
+void test_filter(_g_terminal& trm, const std::vector<std::wstring>& parameters);
 
 _g_terminal& operator << (_g_terminal& t, const _delta_supply_and_demand& delta);
 

@@ -159,6 +159,7 @@
     <ClCompile Include="mathematics.cpp" />
     <ClCompile Include="mediator.cpp" />
     <ClCompile Include="mutator.cpp" />
+    <ClCompile Include="se_library\ed_sampling.cpp" />
     <ClCompile Include="se_library\exchange_basic.cpp" />
     <ClCompile Include="se_library\exchange_data.cpp" />
     <ClCompile Include="se_library\reading_sad.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="mediator.h" />
     <ClInclude Include="mutator.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="se_library\ed_sampling.h" />
     <ClInclude Include="se_library\exchange_basic.h" />
     <ClInclude Include="se_library\exchange_data.h" />
     <ClInclude Include="se_library\reading_sad.h" />

@@ -78,6 +78,9 @@
     <ClCompile Include="se_library\exchange_data.cpp">
       <Filter>Исходные файлы\se_library</Filter>
     </ClCompile>
+    <ClCompile Include="se_library\ed_sampling.cpp">
+      <Filter>Исходные файлы\se_library</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetron.h">
@@ -141,6 +144,9 @@
       <Filter>Исходные файлы\se_library</Filter>
     </ClInclude>
     <ClInclude Include="se_library\exchange_data.h">
+      <Filter>Исходные файлы\se_library</Filter>
+    </ClInclude>
+    <ClInclude Include="se_library\ed_sampling.h">
       <Filter>Исходные файлы\se_library</Filter>
     </ClInclude>
   </ItemGroup>

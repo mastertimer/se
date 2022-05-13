@@ -69,6 +69,7 @@ _g_terminal::_g_terminal()
 	command.insert({ L"help", { L"вывод справки", trm_help } });
 	command.insert({ L"test", { L"тестирование разное", trm_test } });
 	command.insert({ L"1", { L"статистика цен", exchange_fun1 } });
+	command.insert({ L"2", { L"тестирование фильтра", test_filter } });
 	command.insert({ L"sad", { L"спрос и предложение", exchange_fun2 } });
 	command.insert({ L"delta", { L"разность цен", exchange_fun3 } });
 	command.insert({ L"line",  {L"тест скорости рисования линий", trm_line} });
