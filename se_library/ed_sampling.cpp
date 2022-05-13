@@ -32,3 +32,52 @@ ed_sampling_ fltr_supply(const ed_sampling_& eds)
 	}
 	return result;
 }
+
+ed_sampling_ fltr_position(const ed_sampling_& eds, uint filter)
+{
+	ed_sampling_ result;
+	result.data.reserve(eds.data.size());
+	for (auto i : eds.data)
+	{
+		i.demand_filter &= filter;
+		i.supply_filter &= filter;
+		if (!i.empty()) result.data.push_back(i);
+	}
+	return result;
+}
+
+ed_sampling_ fltr_ruble1(const ed_sampling_& eds, int r1)
+{
+	ed_sampling_ result;
+	result.data.reserve(eds.data.size());
+	for (auto i : eds.data)
+	{
+		const auto& sad = ed[i.index];
+		for (auto j = 0; j < size_offer; j++)
+		{
+			uint mask = 1 << j;
+			if (i.demand_filter & mask)	if ((sad.demand[j].price / 100) % 10 != r1) i.demand_filter -= mask;
+			if (i.supply_filter & mask)	if ((sad.supply[j].price / 100) % 10 != r1) i.supply_filter -= mask;
+		}
+		if (!i.empty()) result.data.push_back(i);
+	}
+	return result;
+}
+
+ed_sampling_ fltr_kopeck2(const ed_sampling_& eds, int k2)
+{
+	ed_sampling_ result;
+	result.data.reserve(eds.data.size());
+	for (auto i : eds.data)
+	{
+		const auto& sad = ed[i.index];
+		for (auto j = 0; j < size_offer; j++)
+		{
+			uint mask = 1 << j;
+			if (i.demand_filter & mask)	if (sad.demand[j].price % 100 != k2) i.demand_filter -= mask;
+			if (i.supply_filter & mask)	if (sad.supply[j].price % 100 != k2) i.supply_filter -= mask;
+		}
+		if (!i.empty()) result.data.push_back(i);
+	}
+	return result;
+}

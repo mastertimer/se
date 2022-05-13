@@ -57,7 +57,7 @@ void test_filter(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 	start_se();
 	trm.print(L"количество цен: " + std::to_wstring(ed.size()));
 	trm.start_timer();
-	auto f = fltr_supply(fltr_demand(ed));
+	auto f = fltr_ruble1(fltr_demand(ed), 2);
 	trm.print(L"size: " + std::to_wstring(f.size()));
 	trm.stop_timer(L"a");
 }
