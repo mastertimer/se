@@ -7,6 +7,27 @@ ed_sampling_::ed_sampling_(const _exchange_data& _ed) : data(ed.size())
 	for (int i = 0; i < _ed.size(); i++) data[i].index = i;
 }
 
+_statistics ed_sampling_::get_statistics()
+{
+	_basic_statistics st;
+	forr([&](_offer a) { st.push(a.number); });
+	return st;
+}
+
+void ed_sampling_::forr(std::function<void(_offer)> fun) const
+{
+	for (auto i : data)
+	{
+		const auto& sad = ed[i.index];
+		for (auto j = 0; j < size_offer; j++)
+		{
+			uint mask = 1 << j;
+			if (i.demand_filter & mask)	fun(sad.demand[j]);
+			if (i.supply_filter & mask)	fun(sad.supply[j]);
+		}
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ed_sampling_ fltr_demand(const ed_sampling_& eds)
@@ -85,15 +106,6 @@ ed_sampling_ fltr_kopeck2(const ed_sampling_& eds, int k2)
 int max_number(const ed_sampling_& eds)
 {
 	int result = 0;
-	for (auto i : eds.data)
-	{
-		const auto& sad = ed[i.index];
-		for (auto j = 0; j < size_offer; j++)
-		{
-			uint mask = 1 << j;
-			if (i.demand_filter & mask)	if (sad.demand[j].number > result) result = sad.demand[j].number;
-			if (i.supply_filter & mask)	if (sad.supply[j].number > result) result = sad.supply[j].number;
-		}
-	}
+	eds.forr([&](_offer a) { if (a.number > result) result = a.number; });
 	return result;
 }
