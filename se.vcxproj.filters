@@ -81,6 +81,9 @@
     <ClCompile Include="library\mathematics.cpp">
       <Filter>Исходные файлы\library</Filter>
     </ClCompile>
+    <ClCompile Include="library\statistics.cpp">
+      <Filter>Исходные файлы\library</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetron.h">
@@ -147,6 +150,9 @@
       <Filter>Исходные файлы\se_library</Filter>
     </ClInclude>
     <ClInclude Include="library\mathematics.h">
+      <Filter>Исходные файлы\library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\statistics.h">
       <Filter>Исходные файлы\library</Filter>
     </ClInclude>
   </ItemGroup>

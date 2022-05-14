@@ -3,7 +3,7 @@
 #include "graphics.h" 
 #include "json.h" 
 #include "speed.h" 
-#include "mathematics.h"
+#include "statistics.h"
 #include "hash.h" 
 #include "multi_string.h" 
 
