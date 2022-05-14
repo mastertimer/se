@@ -30,3 +30,5 @@ ed_sampling_ fltr_supply(const ed_sampling_& eds);
 ed_sampling_ fltr_position(const ed_sampling_& eds, uint filter);
 ed_sampling_ fltr_ruble1(const ed_sampling_& eds, int r1); // по последней цифре рубля
 ed_sampling_ fltr_kopeck2(const ed_sampling_& eds, int k2); // 2 цифры копеек
+
+int max_number(const ed_sampling_& eds);

@@ -81,3 +81,19 @@ ed_sampling_ fltr_kopeck2(const ed_sampling_& eds, int k2)
 	}
 	return result;
 }
+
+int max_number(const ed_sampling_& eds)
+{
+	int result = 0;
+	for (auto i : eds.data)
+	{
+		const auto& sad = ed[i.index];
+		for (auto j = 0; j < size_offer; j++)
+		{
+			uint mask = 1 << j;
+			if (i.demand_filter & mask)	if (sad.demand[j].number > result) result = sad.demand[j].number;
+			if (i.supply_filter & mask)	if (sad.supply[j].number > result) result = sad.supply[j].number;
+		}
+	}
+	return result;
+}

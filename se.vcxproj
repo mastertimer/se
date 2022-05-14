@@ -155,8 +155,8 @@
     <ClCompile Include="exchange_trade.cpp" />
     <ClCompile Include="g_exchange_graph.cpp" />
     <ClCompile Include="g_terminal.cpp" />
+    <ClCompile Include="library\mathematics.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mathematics.cpp" />
     <ClCompile Include="mediator.cpp" />
     <ClCompile Include="mutator.cpp" />
     <ClCompile Include="se_library\ed_sampling.cpp" />
@@ -179,7 +179,7 @@
     <ClInclude Include="exchange_trade.h" />
     <ClInclude Include="g_exchange_graph.h" />
     <ClInclude Include="g_terminal.h" />
-    <ClInclude Include="mathematics.h" />
+    <ClInclude Include="library\mathematics.h" />
     <ClInclude Include="mediator.h" />
     <ClInclude Include="mutator.h" />
     <ClInclude Include="resource.h" />

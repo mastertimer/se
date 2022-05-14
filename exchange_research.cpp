@@ -60,6 +60,7 @@ void test_filter(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 	auto f = fltr_ruble1(fltr_demand(ed), 2);
 	trm.print(L"size: " + std::to_wstring(f.size()));
 	trm.stop_timer(L"a");
+	trm.print(L"max_number = " + std::to_wstring(max_number(ed)));
 }
 
 void exchange_fun1(_g_terminal& trm, const std::vector<std::wstring>& parameters)

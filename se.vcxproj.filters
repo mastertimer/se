@@ -30,9 +30,6 @@
     <ClCompile Include="mutator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="mathematics.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="t_function.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -81,15 +78,15 @@
     <ClCompile Include="se_library\ed_sampling.cpp">
       <Filter>Исходные файлы\se_library</Filter>
     </ClCompile>
+    <ClCompile Include="library\mathematics.cpp">
+      <Filter>Исходные файлы\library</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetron.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="mutator.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="mathematics.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="t_function.h">
@@ -148,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="se_library\ed_sampling.h">
       <Filter>Исходные файлы\se_library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\mathematics.h">
+      <Filter>Исходные файлы\library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
