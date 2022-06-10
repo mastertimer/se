@@ -67,8 +67,8 @@ void start_se()
 	graph->cha_area();
 
 	update_index_data();
-	graph->curve2.push_back(new _candle_curve);
-	graph->curve2.push_back(new _prices_curve2);
+	graph->curve.push_back(new _candle_curve);
+	graph->curve.push_back(new _prices_curve2);
 }
 
 void expand_elements_graph()
@@ -87,7 +87,7 @@ void narrow_graph_elements()
 
 _g_exchange_graph::~_g_exchange_graph()
 {
-	for (auto i : curve2) delete i;
+	for (auto i : curve) delete i;
 }
 
 bool _g_exchange_graph::mouse_down_left2(_xy r)
@@ -144,7 +144,7 @@ void _g_exchange_graph::ris2(_trans tr, bool final)
 	_g_scrollbar* sb = find1<_g_scrollbar>(flag_part);
 	if (sb)	polzi_ = sb->position;
 
-	i64 ll2 = curve2.size();
+	i64 ll2 = curve.size();
 
 	i64 k_el = local_area.x.length() / size_el;
 	if (k_el < 1) return;
@@ -166,7 +166,7 @@ void _g_exchange_graph::ris2(_trans tr, bool final)
 		if (ii >= (i64)index_data.size()) break;
 		for (i64 j = 0; j < ll2; j++)
 		{
-			_interval il = curve2[j]->get_y(ii);
+			_interval il = curve[j]->get_y(ii);
 			if (il.min < zmin) zmin = il.min;
 			if (il.max > zmax) zmax = il.max;
 		}
@@ -182,11 +182,11 @@ void _g_exchange_graph::ris2(_trans tr, bool final)
 		time_.push_back(index_data[ii].time);
 		for (i64 j = 0; j < ll2; j++)
 		{
-			_interval il = curve2[j]->get_y(ii);
+			_interval il = curve[j]->get_y(ii);
 			double ymi = a.y.max - (il.min - zmin) * a.y.length() / (zmax - zmin);
 			double yma = a.y.max - (il.max - zmin) * a.y.length() / (zmax - zmin);
 			double x = r_el * i + a.x.min;
-			curve2[j]->draw(ii, { {x, x + r_el}, {yma, ymi} });
+			curve[j]->draw(ii, { {x, x + r_el}, {yma, ymi} });
 		}
 	}
 	// рисование сетки

@@ -15,7 +15,7 @@ struct _basic_curve // база для кривых
 
 struct _g_exchange_graph : public _t_go
 {
-	std::vector<_basic_curve*> curve2; // кривая, 2я версия
+	std::vector<_basic_curve*> curve; // кривая, 2я версия
 	i64 size_el = 6; // размер элемента
 
 	_g_exchange_graph();

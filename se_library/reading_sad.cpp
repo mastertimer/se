@@ -66,13 +66,13 @@ namespace
 		if (image.size.empty()) return;
 		auto sl = image.scan_line2(0);
 		for (i64 i = 0; i < image.size.x; i++)
-			if (sl[i] != 0xffffffff)
+			if (sl[i].c != 0xffffffff)
 			{
 				sep1 = i;
 				break;
 			}
 		for (i64 i = sep1 + 1; i < image.size.x; i++)
-			if (sl[i] != 0xffffffff)
+			if (sl[i].c != 0xffffffff)
 			{
 				sep2 = i;
 				break;
@@ -95,16 +95,16 @@ namespace
 			0xffe8e8e8, 0xffe6e6e6, 0xffe4e4e4 };
 		auto write_c = [&](wchar_t c)
 		{
-			u64 key = (u64(sl1[point1.x]) << 32) + sl2[point2.x];
+			u64 key = (u64(sl1[point1.x].c) << 32) + sl2[point2.x].c;
 			key |= 0xff000000ff000000;
 			res.insert({ key, c });
 		};
 		for (int i = 0; i <= 9; i++)
 		{
-			kk.clear(0xffffffff);
+			kk.clear({ 0xffffffff });
 			kk.text({ 0, -4 }, std::to_wstring(i), 16, 0xffff0000);
 			write_c(L'0' + i);
-			kk.clear(0xffffffff);
+			kk.clear({ 0xffffffff });
 			kk.text({ 0, -4 }, std::to_wstring(i), 16, 0xff0000ff);
 			write_c(L'0' + i);
 			for (int y = 0; y < font_height; y++) kk.line({ 0, y }, { font_width - 1, y }, zebra1[y]);
@@ -186,7 +186,7 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 
 		auto read_c = [&](i64 x) -> std::optional<int> 
 			{
-				u64 key = (u64(sl1[x + point1.x]) << 32) + sl2[x + point2.x];
+				u64 key = (u64(sl1[x + point1.x].c) << 32) + sl2[x + point2.x].c;
 				auto symb = gadugi_16.find(key);
 				if (symb == gadugi_16.end()) return std::nullopt;
 				wchar_t c = symb->second;
@@ -223,7 +223,7 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 		auto sl = image.scan_line2(indent_from_above + j * step_height_line + font_height / 2);
 		_color ccc = sl[sep2 + 2];
 		for (i64 i = sep2 + 2; i <= x0; i++ )
-			if (sl[i] != ccc) goto err; // должна быть линия сплошного цвета
+			if (sl[i].c != ccc.c) goto err; // должна быть линия сплошного цвета
 		// --------- проверка что ничего не пропущено
 
 		if (j < size_offer)

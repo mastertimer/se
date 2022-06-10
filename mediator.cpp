@@ -71,7 +71,7 @@ _recognize::_recognize()
 			if (size.x > 20) return;//что-то не то...
 			if ((size.x > bm_[nf].size.x) || (size.y > bm_[nf].size.y))
 				bm_[nf].resize({ std::max(size.x, bm_[nf].size.x), std::max(size.y, bm_[nf].size.y) });
-			bm_[nf].clear(0);
+			bm_[nf].clear({ 0 });
 			bm_[nf].text({ 0LL, 0LL }, ss_.data(), 8, 0xffffff, 0);
 			ZeroMemory(aa, sizeof(ushort) * size.x);
 			for (i64 j = size.y - 1; j >= 0; j--)
@@ -95,7 +95,7 @@ int _recognize::read_okno_soobsenii()
 	if (!w) return 1;
 	offset = { 0, 0 };
 	ClientToScreen(w, &offset);
-	image.clear(0xFFFFFFFF); // т.к. если окно свернуто, то не грабится
+	image.clear({ 0xFFFFFFFF }); // т.к. если окно свернуто, то не грабится
 	image.grab_ecran_oo2(w);
 	find_text13(0xFF000000);
 	return 0;
@@ -107,7 +107,7 @@ int _recognize::read_vnimanie_pokupka()
 	if (!w) return 1;
 	offset = { 0, 0 };
 	ClientToScreen(w, &offset);
-	image.clear(0xFFFFFFFF); // т.к. если окно свернуто, то не грабится
+	image.clear({ 0xFFFFFFFF }); // т.к. если окно свернуто, то не грабится
 	image.grab_ecran_oo2(w);
 	find_text13(0xFF000000);
 	if ((elem.size() < 17) || (elem.size() > 18)) return 2; // неправильное количество элементов
@@ -122,7 +122,7 @@ int _recognize::read_vnimanie_prodaza()
 	if (!w) return 1;
 	offset = { 0, 0 };
 	ClientToScreen(w, &offset);
-	image.clear(0xFFFFFFFF); // т.к. если окно свернуто, то не грабится
+	image.clear({ 0xFFFFFFFF }); // т.к. если окно свернуто, то не грабится
 	image.grab_ecran_oo2(w);
 	find_text13(0xFF000000);
 	if ((elem.size() < 17) || (elem.size() > 18)) return 2; // неправильное количество элементов
@@ -137,7 +137,7 @@ int _recognize::read_vvod_zaya()
 	if (!w) return 1;
 	offset = { 0, 0 };
 	ClientToScreen(w, &offset);
-	image.clear(0xFFFFFFFF); // т.к. если окно свернуто, то не грабится
+	image.clear({ 0xFFFFFFFF }); // т.к. если окно свернуто, то не грабится
 	image.grab_ecran_oo2(w);
 	find_text13(0xFF000000);
 	if ((elem.size() < 20) || (elem.size() > 28)) return 2; // неправильное количество элементов

@@ -28,8 +28,8 @@ void trm_help(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 void trm_line(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 {
 	int iter = 1000000;
-	_picture k1({ 3000, 3000 }, 0xFF000000);
-	_picture k2({ 3000, 3000 }, 0xFF000000);
+	_picture k1({ 3000, 3000 }, { 0xFF000000 });
+	_picture k2({ 3000, 3000 }, { 0xFF000000 });
 	rnd.init(0);
 	trm.start_timer();
 	for (auto i = 0; i < iter; i++)
@@ -49,7 +49,7 @@ void trm_line(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 		auto y1 = rnd(3000);
 		auto y2 = rnd(3000);
 		uint c = rnd(0xFFFFFFFF);
-		k2.line2({ x, y1 }, { x, y2 }, c);
+		k2.line2({ x, y1 }, { x, y2 }, { c });
 	}
 	trm.stop_timer(L"line2");
 	if (k1 == k2)
