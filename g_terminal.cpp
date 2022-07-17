@@ -49,7 +49,7 @@ void trm_line(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 		auto y1 = rnd(3000);
 		auto y2 = rnd(3000);
 		uint c = rnd(0xFFFFFFFF);
-		k2.line2({ x, y1 }, { x, y2 }, { c });
+		k2.line3({ x, y1 }, { x, y2 }, { c });
 	}
 	trm.stop_timer(L"line2");
 	if (k1 == k2)
