@@ -317,12 +317,12 @@ void _candle_curve::draw(i64 n, _area area)
 	}
 	if (first_ <= last_)
 	{
-		master_bm.fill_rectangle({ xx, {yla, yfi} }, col_rost);
+		master_bm.fill_rectangle(_iarea{ xx, {yla, yfi} }, { col_rost });
 		master_bm.line({ xx.center(), area.y.max }, { xx.center(), area.y.min }, col_rost);
 	}
 	else
 	{
-		master_bm.fill_rectangle({ xx, {yfi, yla} }, col_pade);
+		master_bm.fill_rectangle(_iarea{ xx, {yfi, yla} }, { col_pade });
 		master_bm.line({ xx.center(), area.y.max }, { xx.center(), area.y.min }, col_pade);
 	}
 }
@@ -390,7 +390,7 @@ void _prices_curve::draw(i64 n, _area area)
 	max = index_data[n].maxmax;
 	_iinterval xx = area.x;
 	xx.min++;
-	i64 dx = xx.size();
+	i64 dx = xx.length();
 	if (dx < 2) return;
 	i64 step = 60;
 	if (dx >= 4) step = 30;
@@ -432,7 +432,7 @@ void _prices_curve::draw(i64 n, _area area)
 			uint q = (uint)sqrt(pri[ss_].supply[j].number) + 32;
 			if (q > 255) q = 255;
 			uint cc = (q << 8) + (q << 16) + 0x60000000;
-			master_bm.fill_rectangle({ {xx1, xx2}, yy }, cc);
+			master_bm.fill_rectangle(_iarea{ {xx1, xx2}, yy }, { cc });
 		}
 		for (int j = 0; j < size_offer; j++)
 		{
@@ -444,7 +444,7 @@ void _prices_curve::draw(i64 n, _area area)
 			uint q = (uint)sqrt(pri[ss_].demand[j].number) + 32;
 			if (q > 255) q = 255;
 			uint cc = q + (q << 8) + 0x60000000;
-			master_bm.fill_rectangle({ {xx1, xx2}, yy }, cc);
+			master_bm.fill_rectangle(_iarea{ {xx1, xx2}, yy }, { cc });
 		}
 	}
 }
@@ -512,7 +512,7 @@ void _prices_curve2::draw(i64 n, _area area)
 	max = index_data[n].maxmax;
 	_iinterval xx = area.x;
 	xx.min++;
-	i64 dx = xx.size();
+	i64 dx = xx.length();
 	if (dx < 2) return;
 	i64 step = 60;
 	if (dx >= 4) step = 30;
@@ -555,7 +555,7 @@ void _prices_curve2::draw(i64 n, _area area)
 				if (pri[ss_].supply[j].number > pri[ss_pr].supply[j].number) cc = 0x9000ff00;
 				if (pri[ss_].supply[j].number < pri[ss_pr].supply[j].number) cc = 0x70ff0000;
 			}
-			if (cc != 0x40ffffff) master_bm.fill_rectangle({ {xx1, xx2}, yy }, cc);
+			if (cc != 0x40ffffff) master_bm.fill_rectangle(_iarea{ {xx1, xx2}, yy }, { cc });
 		}
 		ss_pr = ss_;
 	}

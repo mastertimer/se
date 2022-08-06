@@ -361,7 +361,7 @@ void _cdf::calc(const _statistics& st, i64 n, i64 min_value, i64 max_value)
 		pr = st.min_value();
 		a.o = { min_value, pr };
 		a.k = 0;
-		a.bit = bit_for_value(a.o.size());
+		a.bit = bit_for_value(a.o.length());
 		ee.push_back(a);
 	}
 	else
@@ -374,7 +374,7 @@ void _cdf::calc(const _statistics& st, i64 n, i64 min_value, i64 max_value)
 		{
 			a.o = { pr, i.value };
 			a.k = 0;
-			a.bit = bit_for_value(a.o.size());
+			a.bit = bit_for_value(a.o.length());
 			ee.push_back(a);
 		}
 		a.o = i.value;
@@ -387,7 +387,7 @@ void _cdf::calc(const _statistics& st, i64 n, i64 min_value, i64 max_value)
 	{
 		a.o = { pr, max_value + 1 };
 		a.k = 0;
-		a.bit = bit_for_value(a.o.size());
+		a.bit = bit_for_value(a.o.length());
 		ee.push_back(a);
 	}
 
@@ -425,7 +425,7 @@ void _cdf::calc(const _statistics& st, i64 n, i64 min_value, i64 max_value)
 		auto j = aa.right; // правая пара
 		aa.u1.k += aa.u2.k;
 		aa.u1.o.max = aa.u2.o.max;
-		aa.u1.bit = bit_for_value(aa.u1.o.size());
+		aa.u1.bit = bit_for_value(aa.u1.o.length());
 		_2uuu ii, jj;
 		bool ina = (i != a_);
 		bool jna = (j != a_);

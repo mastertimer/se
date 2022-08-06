@@ -64,7 +64,7 @@ namespace
 	void find_separator(i64& sep1, i64& sep2)
 	{
 		if (image.size.empty()) return;
-		auto sl = image.scan_line2(0);
+		auto sl = image.scan_line(0);
 		for (i64 i = 0; i < image.size.x; i++)
 			if (sl[i].c != 0xffffffff)
 			{
@@ -89,8 +89,8 @@ namespace
 		constexpr int font_width = 6;
 		_bitmap kk(font_width, font_height);
 		kk.set_font(L"Gadugi", false);
-		auto sl1 = kk.scan_line2(point1.y);
-		auto sl2 = kk.scan_line2(point2.y);
+		auto sl1 = kk.scan_line(point1.y);
+		auto sl2 = kk.scan_line(point2.y);
 		constexpr uint zebra1[font_height] = { 0xfff6f6f6, 0xfff3f3f3, 0xfff1f1f1, 0xffefefef, 0xffededed, 0xffeaeaea,
 			0xffe8e8e8, 0xffe6e6e6, 0xffe4e4e4 };
 		auto write_c = [&](wchar_t c)
@@ -180,8 +180,8 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 
 	for (i64 j = 0; j < size_offer * 2; j++)
 	{
-		auto sl1 = image.scan_line2(indent_from_above + j * step_height_line + point1.y);
-		auto sl2 = image.scan_line2(indent_from_above + j * step_height_line + point2.y);
+		auto sl1 = image.scan_line(indent_from_above + j * step_height_line + point1.y);
+		auto sl2 = image.scan_line(indent_from_above + j * step_height_line + point2.y);
 		i64 x0 = sep1 - indent_from_separator - font_width;
 
 		auto read_c = [&](i64 x) -> std::optional<int> 
@@ -220,7 +220,7 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 
 		// проверка что ничего не пропущено
 		x0 += font_width - 2;
-		auto sl = image.scan_line2(indent_from_above + j * step_height_line + font_height / 2);
+		auto sl = image.scan_line(indent_from_above + j * step_height_line + font_height / 2);
 		_color ccc = sl[sep2 + 2];
 		for (i64 i = sep2 + 2; i <= x0; i++ )
 			if (sl[i].c != ccc.c) goto err; // должна быть линия сплошного цвета

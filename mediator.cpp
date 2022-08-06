@@ -76,7 +76,7 @@ _recognize::_recognize()
 			ZeroMemory(aa, sizeof(ushort) * size.x);
 			for (i64 j = size.y - 1; j >= 0; j--)
 			{
-				auto sl = bm_[nf].scan_line2(j);
+				auto sl = bm_[nf].scan_line(j);
 				for (int i_ = 0; i_ < size.x; i_++) aa[i_] = (aa[i_] << 1) + (sl[i_].c > 0);
 			}
 			int na = 0;
@@ -172,7 +172,7 @@ void _recognize::find_text13(uint c, int err)
 	ZeroMemory(lin, sizeof(ushort) * rx);
 	for (i64 j = image.size.y - 1; j >= 0; j--)
 	{
-		auto sl = image.scan_line2(j);
+		auto sl = image.scan_line(j);
 		i64 first = -1;
 		i64 last = -100;
 		bool norm = true;
@@ -224,7 +224,7 @@ void _recognize::find_text13(uint c)
 	ZeroMemory(lin, sizeof(ushort) * rx);
 	for (i64 j = image.size.y - 1; j >= 0; j--)
 	{
-		auto sl = image.scan_line2(j);
+		auto sl = image.scan_line(j);
 		i64 first = -1;
 		i64 last = -100;
 		bool norm = true;
@@ -435,9 +435,9 @@ void buy_stock(_tetron* tt, bool buy)
 			//			MessageBox(0, L"не найдена покупка/продажа", L"упс..", MB_OK | MB_TASKMODAL);
 			return;
 		}
-		auto c = recognize.image.scan_line2(recognize.elem[n_pok].area.y.min)[recognize.elem[n_pok].area.x.min - 1];
+		auto c = recognize.image.scan_line(recognize.elem[n_pok].area.y.min)[recognize.elem[n_pok].area.x.min - 1];
 		bool cfpok = (c.b != c.g) || (c.b != c.r); // не серый цвет
-		c = recognize.image.scan_line2(recognize.elem[n_pro].area.y.min)[recognize.elem[n_pro].area.x.min - 1];
+		c = recognize.image.scan_line(recognize.elem[n_pro].area.y.min)[recognize.elem[n_pro].area.x.min - 1];
 		bool cfpro = (c.b != c.g) || (c.b != c.r); // не серый цвет
 //		bool cfpok = (recognize.image.scan_line(recognize.elem[n_pok].area.y.min)[recognize.elem[n_pok].area.x.min - 1] != recognize.image.data[0]);
 //		bool cfpro = (recognize.image.scan_line(recognize.elem[n_pro].area.y.min)[recognize.elem[n_pro].area.x.min - 1] != recognize.image.data[0]);

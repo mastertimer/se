@@ -128,7 +128,7 @@ void _g_terminal::mouse_move_left2(_xy r)
 	_iarea oo = master_trans_go(local_area);
 	if (y0_move_slider >= 0)
 	{
-		i64 ypix = oo.y.size() - otst_y * 2 - y_slider.size();
+		i64 ypix = oo.y.length() - otst_y * 2 - y_slider.length();
 		i64 yline = full_lines - max_lines;
 		scrollbar = scrollbar0_move_slider - (r.y - y0_move_slider) * yline / ypix;
 		cha_area();
@@ -402,11 +402,11 @@ void _g_terminal::ris2(_trans tr, bool final)
 
 	i64 x_text = oo.x.min + otst_x;
 	i64 y_cmd = oo.y.max - font_size - otst_y;
-	cmd_vis_len = (oo.x.size() - otst_x * 2 - width_scrollbar) / font_width;
+	cmd_vis_len = (oo.x.length() - otst_x * 2 - width_scrollbar) / font_width;
 	if (cmd_vis_len <= 0) cmd_vis_len = 1;
 	i64 ks = (full_cmd.size() + cmd_vis_len) / cmd_vis_len;
 
-	max_lines = (oo.y.size() - otst_y * 2) / font_size; // строк в окне
+	max_lines = (oo.y.length() - otst_y * 2) / font_size; // строк в окне
 
 	full_lines = 0; // общее количество строк
 	if (old_cmd_vis_len == cmd_vis_len)
@@ -423,8 +423,8 @@ void _g_terminal::ris2(_trans tr, bool final)
 		old_full_lines = full_lines;
 	}
 
-	i64 length_slider = max_lines * (oo.y.size() - otst_y * 2) / full_lines;
-	if (length_slider > oo.y.size() - otst_y * 2) length_slider = oo.y.size() - otst_y * 2;
+	i64 length_slider = max_lines * (oo.y.length() - otst_y * 2) / full_lines;
+	if (length_slider > oo.y.length() - otst_y * 2) length_slider = oo.y.length() - otst_y * 2;
 	if (length_slider < 10) length_slider = 10;
 
 	uint c2 = get_c2();
@@ -457,13 +457,13 @@ void _g_terminal::ris2(_trans tr, bool final)
 	{
 		if (area_cursor.empty()) goto finish; // перестраховка
 		master_bm.text({ area_cursor.x.min, area_cursor.y.min }, cmd.substr(cursor, 1), font_size, cc2, cc0);
-		if (visible_cursor) master_bm.fill_rectangle(area_cursor, cc3 - 0xC0000000);
+		if (visible_cursor) master_bm.fill_rectangle(area_cursor, { cc3 - 0xC0000000 });
 		goto finish;
 	}
 
-	master_bm.fill_rectangle(oo2, c2);
+	master_bm.fill_rectangle(oo2, { c2 });
 	if (((c0 >> 24) != 0x00) && (c0 != c2)) master_bm.rectangle(oo2, c0);
-	if ((oo2.y.size() < 30) || (oo2.x.size() < 30)) goto finish;
+	if ((oo2.y.length() < 30) || (oo2.x.length() < 30)) goto finish;
 
 	if (full_lines > max_lines)
 	{ // ползунок
@@ -471,10 +471,10 @@ void _g_terminal::ris2(_trans tr, bool final)
 		master_bm.line({ oo2.x.max, oo.y.min }, { oo.x.max - 2, oo.y.min }, c0);
 		master_bm.line({ oo2.x.max, oo.y.max - 1 }, { oo.x.max - 2, oo.y.max - 1 }, c0);
 
-		i64 tt = (oo.y.size() - otst_y * 2 - length_slider) * scrollbar / (full_lines - max_lines);
+		i64 tt = (oo.y.length() - otst_y * 2 - length_slider) * scrollbar / (full_lines - max_lines);
 
 		y_slider = { oo.y.max - otst_y - tt - length_slider, oo.y.max - otst_y - tt };
-		master_bm.fill_rectangle({ {oo.x.max - width_scrollbar + 2, oo.x.max - 2}, y_slider }, c0);
+		master_bm.fill_rectangle(_iarea{ {oo.x.max - width_scrollbar + 2, oo.x.max - 2}, y_slider }, { c0 });
 	}
 
 	if (n_act_key == this)
@@ -491,7 +491,7 @@ void _g_terminal::ris2(_trans tr, bool final)
 			font_size, cc2, cc0);
 	}
 
-	if (visible_cursor) master_bm.fill_rectangle(area_cursor, cc3 - 0xC0000000);
+	if (visible_cursor) master_bm.fill_rectangle(area_cursor, { cc3 - 0xC0000000 });
 
 	for (i64 i = text.size() - 1; i >= 0; i--)
 	{
@@ -523,7 +523,7 @@ void _g_terminal::ris2(_trans tr, bool final)
 				i64 x1 = std::max(selection_begin.x, selection_end.x) + 1;
 				_iarea a = { {x_text + x0 * font_width, x_text + x1 * font_width},
 					{y_cmd - yy * font_size, y_cmd - (yy - 1) * font_size} };
-				master_bm.fill_rectangle(a, cc3 - 0xA0000000);
+				master_bm.fill_rectangle(a, { cc3 - 0xA0000000 });
 			}
 		}
 		else
@@ -547,21 +547,21 @@ void _g_terminal::ris2(_trans tr, bool final)
 			{
 				_iarea a = { {x_text + x1 * font_width, x_text + cmd_vis_len * font_width},
 				{y_cmd - y1 * font_size, y_cmd - (y1 - 1) * font_size} };
-				master_bm.fill_rectangle(a, cc3 - 0xA0000000);
+				master_bm.fill_rectangle(a, { cc3 - 0xA0000000 });
 			}
 			for (i64 yy = y1 - 1; yy > y0; yy--)
 				if ((yy >= 0) && (yy < max_lines))
 				{
 					_iarea a = { {x_text, x_text + cmd_vis_len * font_width},
 					{y_cmd - yy * font_size, y_cmd - (yy - 1) * font_size} };
-					master_bm.fill_rectangle(a, cc3 - 0xA0000000);
+					master_bm.fill_rectangle(a, { cc3 - 0xA0000000 });
 				}
 
 			if ((y0 >= 0) && (y0 < max_lines))
 			{
 				_iarea a = { {x_text, x_text + (x0 + 1) * font_width},
 				{y_cmd - y0 * font_size, y_cmd - (y0 - 1) * font_size} };
-				master_bm.fill_rectangle(a, cc3 - 0xA0000000);
+				master_bm.fill_rectangle(a, { cc3 - 0xA0000000 });
 			}
 		}
 	}
