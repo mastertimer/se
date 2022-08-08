@@ -1158,7 +1158,7 @@ void _g_circle::calc_local_area()
 
 void _g_circle::ris2(_trans tr, bool final)
 {
-	master_bm.fill_ring(tr(center), tr(radius), tr(width), get_c(), get_c2());
+	master_bm.fill_ring(tr(center), tr(radius), tr(width), { get_c() }, { get_c2() });
 }
 
 bool _g_circle::test_local_area(_xy b)
@@ -2566,7 +2566,7 @@ void _g_tetron::ris2(_trans tr, bool final)
 	else
 		if (t2 == root_tetron) c = 0xFFFF0000;
 
-	master_bm.fill_ring(p, r, d, c, (im_temp) ? 0 : cc0);
+	master_bm.fill_ring(p, r, d, { c }, { (im_temp) ? 0 : cc0 });
 
 	_t_trans* ttr = nullptr; // звезда
 	if (star) ttr = *star;
@@ -3011,7 +3011,7 @@ void _g_graph::ris2(_trans tr, bool final)
 			double y3 = (a.y.max - (i.mean - miny) * ky);
 			master_bm.line({ xx - dxc2 * 2, y1 }, { xx + dxc2 * 2, y1 }, cc1);
 			master_bm.line({ xx - dxc2 * 2, y2 }, { xx + dxc2 * 2, y2 }, cc1);
-			master_bm.fill_circle({ xx, y3 }, dxc2, cc1);
+			master_bm.fill_circle({ xx, y3 }, dxc2, { cc1 });
 		}
 	}
 	double delta_bar = 0;

@@ -25,41 +25,6 @@ void trm_help(_g_terminal& trm, const std::vector<std::wstring>& parameters)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void trm_line(_g_terminal& trm, const std::vector<std::wstring>& parameters)
-{
-	int iter = 1000000;
-	_picture k1({ 3000, 3000 }, { 0xFF000000 });
-	_picture k2({ 3000, 3000 }, { 0xFF000000 });
-	rnd.init(0);
-	trm.start_timer();
-	for (auto i = 0; i < iter; i++)
-	{
-		auto x = rnd(3000);
-		auto y1 = rnd(3000);
-		auto y2 = rnd(3000);
-		uint c = rnd(0xFFFFFFFF);
-		k1.line({ x, y1 }, { x, y2 }, c);
-	}
-	trm.stop_timer(L"line");
-	rnd.init(0);
-	trm.start_timer();
-	for (auto i = 0; i < iter; i++)
-	{
-		auto x = rnd(3000);
-		auto y1 = rnd(3000);
-		auto y2 = rnd(3000);
-		uint c = rnd(0xFFFFFFFF);
-		k2.line3({ x, y1 }, { x, y2 }, { c });
-	}
-	trm.stop_timer(L"line2");
-	if (k1 == k2)
-		trm.print(L"картинки равны");
-	else
-		trm.print(L"!!НЕСОВПАДЕНИЕ");
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 _g_terminal::_g_terminal()
 {
 	local_area = { {0, 100}, {0, 100} };
@@ -72,7 +37,6 @@ _g_terminal::_g_terminal()
 	command.insert({ L"2", { L"тестирование фильтра", test_filter } });
 	command.insert({ L"sad", { L"спрос и предложение", exchange_fun2 } });
 	command.insert({ L"delta", { L"разность цен", exchange_fun3 } });
-	command.insert({ L"line",  {L"тест скорости рисования линий", trm_line} });
 }
 
 void _g_terminal::start_timer()
@@ -441,7 +405,7 @@ void _g_terminal::ris2(_trans tr, bool final)
 	if ((n_cur < 0) || (n_cur >= max_lines))
 	{
 		if (!vis_cur)
-			area_cursor.clear();
+			area_cursor = _iarea();
 		else
 		{
 			scrollbar = ks - 1 - y_cur;
