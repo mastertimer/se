@@ -87,6 +87,9 @@
     <ClCompile Include="froglif.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="library\ui.cpp">
+      <Filter>Исходные файлы\library</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetron.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="froglif.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ui.h">
+      <Filter>Исходные файлы\library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -158,6 +158,7 @@
     <ClCompile Include="g_terminal.cpp" />
     <ClCompile Include="library\mathematics.cpp" />
     <ClCompile Include="library\statistics.cpp" />
+    <ClCompile Include="library\ui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mediator.cpp" />
     <ClCompile Include="mutator.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="g_terminal.h" />
     <ClInclude Include="library\mathematics.h" />
     <ClInclude Include="library\statistics.h" />
+    <ClInclude Include="library\ui.h" />
     <ClInclude Include="mediator.h" />
     <ClInclude Include="mutator.h" />
     <ClInclude Include="resource.h" />
