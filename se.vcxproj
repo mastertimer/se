@@ -156,6 +156,7 @@
     <ClCompile Include="froglif.cpp" />
     <ClCompile Include="g_exchange_graph.cpp" />
     <ClCompile Include="g_terminal.cpp" />
+    <ClCompile Include="library\e_terminal.cpp" />
     <ClCompile Include="library\mathematics.cpp" />
     <ClCompile Include="library\statistics.cpp" />
     <ClCompile Include="library\ui.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="froglif.h" />
     <ClInclude Include="g_exchange_graph.h" />
     <ClInclude Include="g_terminal.h" />
+    <ClInclude Include="library\e_terminal.h" />
     <ClInclude Include="library\mathematics.h" />
     <ClInclude Include="library\statistics.h" />
     <ClInclude Include="library\ui.h" />

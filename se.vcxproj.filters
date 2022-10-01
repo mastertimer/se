@@ -90,6 +90,9 @@
     <ClCompile Include="library\ui.cpp">
       <Filter>Исходные файлы\library</Filter>
     </ClCompile>
+    <ClCompile Include="library\e_terminal.cpp">
+      <Filter>Исходные файлы\library</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetron.h">
@@ -166,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="library\ui.h">
       <Filter>Исходные файлы\library</Filter>
+    </ClInclude>
+    <ClInclude Include="library\e_terminal.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
