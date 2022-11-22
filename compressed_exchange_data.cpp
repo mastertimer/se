@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <map>
 
+#include "win_basic.h"
 #include "statistics.h"
 #include "compressed_exchange_data.h"
 
