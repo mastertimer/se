@@ -340,7 +340,7 @@ int _recognize::find_elem(std::wstring_view s)
 	return -1;
 }
 
-int _recognize::find_elem_kusok(wstr s)
+int _recognize::find_elem_kusok(std::wstring_view s)
 {
 	int l = (int)elem.size();
 	for (int i = 0; i < l; i++)
@@ -368,7 +368,7 @@ int bad_string_to_int(std::wstring& s)
 	int r = 0;
 	int ii;
 	int l = (int)s.size();
-	wstr ss_ = s.data();
+	const wchar_t* ss_ = s.data();
 	for (ii = 0; ii < l; ii++) if ((ss_[ii] >= L'0') && (ss_[ii] <= L'9')) break;
 	for (int i = ii; i < l; i++)
 		if ((ss_[i] >= L'0') && (ss_[i] <= L'9'))

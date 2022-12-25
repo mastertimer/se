@@ -45,7 +45,7 @@ struct _recognize // распознавание с экрана
 	void find_text13(uint c); // найти текст высотой 13 с нужным цветом
 	void find_text13(uint c, int err); // err - погрешность !!! тест скорости, возможно удалить 2 другие !!!
 	int find_elem(std::wstring_view s); // найти текст среди элементов
-	int find_elem_kusok(wstr s); // найти кусок текста среди элементов
+	int find_elem_kusok(std::wstring_view s); // найти кусок текста среди элементов
 
 private:
 	_kusok_bukva bu; // дерево алфавита для распознавания
