@@ -72,12 +72,6 @@
     <ClCompile Include="froglif.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="library\ui.cpp">
-      <Filter>Исходные файлы\library</Filter>
-    </ClCompile>
-    <ClCompile Include="library\e_terminal.cpp">
-      <Filter>Исходные файлы\library</Filter>
-    </ClCompile>
     <ClCompile Include="..\library\basic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -94,6 +88,12 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\library\win_basic.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\e_terminal.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="..\library\ui.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,12 +149,6 @@
     <ClInclude Include="froglif.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="library\ui.h">
-      <Filter>Исходные файлы\library</Filter>
-    </ClInclude>
-    <ClInclude Include="library\e_terminal.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="..\library\basic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -177,6 +171,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="..\library\win_basic.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\library\e_terminal.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="..\library\ui.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
