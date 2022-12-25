@@ -16,7 +16,7 @@ namespace
 	void load_mmm()
 	{
 		mmm_loaded = true;
-		_rjson fs((exe_path + mmm_file).c_str());
+		_rjson fs(exe_path / mmm_file);
 		fs.read("mmm1", mmm1s);
 		fs.read("mmm2", mmm2s);
 		fs.read("mmm3", mmm3s);

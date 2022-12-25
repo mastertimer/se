@@ -240,7 +240,7 @@ err:
 			if (rnd(++recorded_errors) < num_err_files)
 			{
 				auto n = rnd(num_err_files);
-				last_error_image.save_to_file(exe_path + L"sad_error_" + std::to_wstring(n) + L".bmp");
+				last_error_image.save_to_file((exe_path / (L"sad_error_" + std::to_wstring(n) + L".bmp")).c_str());
 			}
 		}
 	return std::nullopt;

@@ -15,7 +15,7 @@ namespace
 
 void _exchange_data::save_to_file()
 {
-	std::wstring fn = exe_path + file_stock_statistics;
+	std::wstring fn = exe_path / file_stock_statistics;
 	_compressed_exchange_data cs[number_thread];
 	std::vector<std::thread> threads;
 
@@ -38,7 +38,7 @@ void _exchange_data::save_to_file()
 
 void _exchange_data::load_from_file()
 {
-	std::wstring fn = exe_path + file_stock_statistics;
+	std::wstring fn = exe_path / file_stock_statistics;
 	_compressed_exchange_data cs[number_thread];
 	std::vector<std::thread> threads;
 

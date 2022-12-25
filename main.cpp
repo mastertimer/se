@@ -1,14 +1,13 @@
-﻿#include <filesystem>
-
-#include "tetron.h"
+﻿#include "tetron.h"
 #include "mutator.h"
 #include "ui.h"
+#include "win_basic.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 _ui ui;
 
-std::wstring tetfile = L"..\\..\\data\\tetrons.txt";
+std::filesystem::path tetfile = L"..\\..\\data\\tetrons.txt";
 
 const HCURSOR cursors[u64(_cursor::vcursor)] = { LoadCursor(0, IDC_ARROW), LoadCursor(0, IDC_SIZEALL),
 	LoadCursor(0, IDC_HAND), LoadCursor(0, IDC_SIZEWE), LoadCursor(0, IDC_SIZENS), LoadCursor(0, IDC_UPARROW) };
@@ -151,7 +150,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				run_timer = false;
 				int r = MessageBox(hWnd, L"сохранить?", L"предупреждение", MB_YESNO);
-				if (r == IDYES) mutator::save_to_txt_file((exe_path + tetfile).c_str());
+				if (r == IDYES) mutator::save_to_txt_file(exe_path / tetfile);
 				run_timer = true;
 			}
 			break;
@@ -220,12 +219,8 @@ void init_ui_elements()
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
-	wchar_t buffer[MAX_PATH];
-	GetModuleFileName(hInstance, buffer, MAX_PATH);
-	std::filesystem::path fn = buffer;
-	fn.remove_filename();
-	exe_path = fn;
-	if (!mutator::start((exe_path + tetfile).c_str())) return 1;
+	exe_path = get_exe_path(hInstance);
+	if (!mutator::start(exe_path / tetfile)) return 1;
 	init_ui_elements();
 
 	static TCHAR szWindowClass[] = L"win64app";
