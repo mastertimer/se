@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 _ui ui;
+bool new_ui = false;
 
 std::filesystem::path tetfile = L"..\\..\\data\\tetrons.txt";
 
@@ -34,12 +35,20 @@ void change_window_text(HWND hwnd)
 
 void paint(HWND hwnd)
 {
-	change_window_text(hwnd);
 	HDC hdc = GetDC(hwnd);
 	RECT rect;
 	GetClientRect(hwnd, &rect);
-	mutator::draw({ rect.right, rect.bottom });
-	BitBlt(hdc, 0, 0, rect.right, rect.bottom, master_bm.hdc, 0, 0, SRCCOPY);
+	if (new_ui)
+	{
+		ui.draw({ rect.right, rect.bottom });
+		BitBlt(hdc, 0, 0, rect.right, rect.bottom, ui.canvas.hdc, 0, 0, SRCCOPY);
+	}
+	else
+	{
+		change_window_text(hwnd);
+		mutator::draw({ rect.right, rect.bottom });
+		BitBlt(hdc, 0, 0, rect.right, rect.bottom, master_bm.hdc, 0, 0, SRCCOPY);
+	}
 	ReleaseDC(hwnd, hdc);
 }
 
@@ -155,6 +164,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				run_timer = true;
 			}
 			break;
+		case VK_F3:
+			{
+				new_ui = !new_ui;
+				paint(hWnd);
+			}
+			break;
+		break;
 		case VK_CONTROL:
 			*n_s_ctrl  ->operator i64* () = 1;
 			break;
@@ -191,11 +207,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 1:
-			n_timer1000->run(0, n_timer1000, flag_run);
-			if (!master_obl_izm.empty()) paint(hWnd);
+			if (new_ui)
+			{
+				ui.run_timer1000();
+				if (!ui.changed_area.empty()) paint(hWnd);
+			}
+			else
+			{
+				n_timer1000->run(0, n_timer1000, flag_run);
+				if (!master_obl_izm.empty()) paint(hWnd);
+			}
 			break;
 		case 2:
-			n_timer250->run(0, n_timer250, flag_run);
+			if (new_ui)
+			{
+
+			}
+			else
+				n_timer250->run(0, n_timer250, flag_run);
 			break;
 		}
 		return 0;
@@ -215,8 +244,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void init_ui_elements()
 {
-	auto tel = std::make_shared<_e_terminal>(&ui);
-	ui.n_ko->add_child(tel);
+	auto term = std::make_shared<_e_terminal>(&ui);
+	ui.n_ko->add_child(term);
+	ui.n_act_key = term;
 }
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
