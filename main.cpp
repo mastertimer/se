@@ -2,6 +2,7 @@
 #include "mutator.h"
 #include "ui.h"
 #include "win_basic.h"
+#include "e_terminal.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -214,7 +215,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void init_ui_elements()
 {
-
+	auto tel = std::make_shared<_e_terminal>(&ui);
+	ui.n_ko->add_child(tel);
 }
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
