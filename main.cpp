@@ -175,9 +175,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			*n_s_ctrl  ->operator i64* () = 1;
 			break;
 		default:
-			*n_down_key->operator i64* () = wParam;
-			n_down_key->run(0, n_down_key, flag_run);
-			if (!master_obl_izm.empty()) paint(hWnd);
+			if (new_ui)
+			{
+				ui.key_down(wParam);
+				if (!ui.changed_area.empty()) paint(hWnd);
+			}
+			else
+			{
+				*n_down_key->operator i64* () = wParam;
+				n_down_key->run(0, n_down_key, flag_run);
+				if (!master_obl_izm.empty()) paint(hWnd);
+			}
 		}
 		return 0;
 	case WM_KEYUP:
@@ -187,9 +195,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 	case WM_CHAR:
-		*n_press_key->operator i64* () = wParam;
-		n_press_key->run(0, n_press_key, flag_run);
-		if (!master_obl_izm.empty()) paint(hWnd);
+		if (new_ui)
+		{
+			ui.key_press(wParam);
+			if (!ui.changed_area.empty()) paint(hWnd);
+		}
+		else
+		{
+			*n_press_key->operator i64* () = wParam;
+			n_press_key->run(0, n_press_key, flag_run);
+			if (!master_obl_izm.empty()) paint(hWnd);
+		}
 		return 0;
 	case WM_PAINT:
 	{
@@ -245,6 +261,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void init_ui_elements()
 {
 	auto term = std::make_shared<_e_terminal>(&ui);
+	term->local_area.x = _interval(10, 480);
+	term->local_area.y = _interval(10, 740);
 	ui.n_ko->add_child(term);
 	ui.n_act_key = term;
 }
