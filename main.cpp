@@ -54,12 +54,22 @@ void paint(HWND hwnd)
 
 void init_shift(WPARAM wparam) // !!! сделать по аналогии c ctrl
 {
-	*n_s_shift ->operator i64* () = wparam & MK_SHIFT;
-	*n_s_alt   ->operator i64* () = false;
-	*n_s_left  ->operator i64* () = wparam & MK_LBUTTON;
-	*n_s_right ->operator i64* () = wparam & MK_RBUTTON;
-	*n_s_middle->operator i64* () = wparam & MK_MBUTTON;
-	*n_s_double->operator i64* () = false;
+	if (new_ui)
+	{
+		ui.n_s_shift = wparam & MK_SHIFT;
+		ui.n_s_left = wparam & MK_LBUTTON;
+		ui.n_s_right = wparam & MK_RBUTTON;
+		ui.n_s_middle = wparam & MK_MBUTTON;
+	}
+	else
+	{
+		*n_s_shift ->operator i64* () = wparam & MK_SHIFT;
+		*n_s_alt   ->operator i64* () = false;
+		*n_s_left  ->operator i64* () = wparam & MK_LBUTTON;
+		*n_s_right ->operator i64* () = wparam & MK_RBUTTON;
+		*n_s_middle->operator i64* () = wparam & MK_MBUTTON;
+		*n_s_double->operator i64* () = false;
+	}
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -87,9 +97,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			TrackMouseEvent(&a);
 		}
 		init_shift(wParam);
-		mouse_xy = { ((double)(short)LOWORD(lParam)), ((double)(short)HIWORD(lParam)) };
-		n_move->run(0, n_move, flag_run);
-		if (!master_obl_izm.empty()) paint(hWnd);
+		if (new_ui)
+		{
+			ui.mouse_xy = { ((double)(short)LOWORD(lParam)), ((double)(short)HIWORD(lParam)) };
+			ui.mouse_move();
+			if (!ui.changed_area.empty()) paint(hWnd);
+		}
+		else
+		{
+			mouse_xy = { ((double)(short)LOWORD(lParam)), ((double)(short)HIWORD(lParam)) };
+			n_move->run(0, n_move, flag_run);
+			if (!master_obl_izm.empty()) paint(hWnd);
+		}
 		return 0;
 	case WM_MOUSELEAVE:
 		tracking_mouse = false;
