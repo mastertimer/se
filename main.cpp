@@ -60,6 +60,7 @@ void init_shift(WPARAM wparam) // !!! сделать по аналогии c ctr
 		ui.n_s_left = wparam & MK_LBUTTON;
 		ui.n_s_right = wparam & MK_RBUTTON;
 		ui.n_s_middle = wparam & MK_MBUTTON;
+		ui.n_s_double = false;
 	}
 	else
 	{
@@ -112,49 +113,97 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_MOUSELEAVE:
 		tracking_mouse = false;
-		if (*n_s_left->operator i64 * ())
+		if (new_ui)
 		{
-			*n_s_left->operator i64* () = 0;
-			n_up_left->run(0, n_up_left, flag_run);
+			if (ui.n_s_left) ui.mouse_button_left_up();
+			if (ui.n_s_right) ui.mouse_button_right_up();
+			if (ui.n_s_middle) ui.mouse_button_middle_up();
 		}
-		if (*n_s_right->operator i64 * ())
+		else
 		{
-			*n_s_right->operator i64* () = 0;
-			n_up_right->run(0, n_up_right, flag_run);
-		}
-		if (*n_s_middle->operator i64 * ())
-		{
-			*n_s_middle->operator i64* () = 0;
-			n_up_middle->run(0, n_up_middle, flag_run);
+			if (*n_s_left->operator i64 * ())
+			{
+				*n_s_left->operator i64* () = 0;
+				n_up_left->run(0, n_up_left, flag_run);
+			}
+			if (*n_s_right->operator i64 * ())
+			{
+				*n_s_right->operator i64* () = 0;
+				n_up_right->run(0, n_up_right, flag_run);
+			}
+			if (*n_s_middle->operator i64 * ())
+			{
+				*n_s_middle->operator i64* () = 0;
+				n_up_middle->run(0, n_up_middle, flag_run);
+			}
 		}
 		return 0;
 	case WM_MOUSEWHEEL:
 		init_shift(GET_KEYSTATE_WPARAM(wParam));
-		*n_wheel->operator i64* () = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
-		n_wheel->run(0, n_wheel, flag_run);
-		if (!master_obl_izm.empty()) paint(hWnd);
+		if (new_ui)
+		{
+			ui.mouse_wheel_turn(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
+			if (!ui.changed_area.empty()) paint(hWnd);
+		}
+		else
+		{
+			*n_wheel->operator i64* () = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
+			n_wheel->run(0, n_wheel, flag_run);
+			if (!master_obl_izm.empty()) paint(hWnd);
+		}
 		return 0;
 	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN: case WM_MBUTTONDOWN:
 		init_shift(wParam);
-		if (message == WM_LBUTTONDOWN) mutator::mouse_button_left(true);
-		if (message == WM_RBUTTONDOWN) mutator::mouse_button_right(true);
-		if (message == WM_MBUTTONDOWN) mutator::mouse_button_middle(true);
-		if (!master_obl_izm.empty()) paint(hWnd);
+		if (new_ui)
+		{
+			if (message == WM_LBUTTONDOWN) ui.mouse_button_left_down();
+			if (message == WM_RBUTTONDOWN) ui.mouse_button_right_down();
+			if (message == WM_MBUTTONDOWN) ui.mouse_button_middle_down();
+			if (!ui.changed_area.empty()) paint(hWnd);
+		}
+		else
+		{
+			if (message == WM_LBUTTONDOWN) mutator::mouse_button_left(true);
+			if (message == WM_RBUTTONDOWN) mutator::mouse_button_right(true);
+			if (message == WM_MBUTTONDOWN) mutator::mouse_button_middle(true);
+			if (!master_obl_izm.empty()) paint(hWnd);
+		}
 		return 0;
 	case WM_LBUTTONUP: case WM_RBUTTONUP: case WM_MBUTTONUP:
 		init_shift(wParam);
-		if (message == WM_LBUTTONUP) mutator::mouse_button_left(false);
-		if (message == WM_RBUTTONUP) mutator::mouse_button_right(false);
-		if (message == WM_MBUTTONUP) mutator::mouse_button_middle(false);
-		if (!master_obl_izm.empty()) paint(hWnd);
+		if (new_ui)
+		{
+			if (message == WM_LBUTTONUP) ui.mouse_button_left_up();
+			if (message == WM_RBUTTONUP) ui.mouse_button_right_up();
+			if (message == WM_MBUTTONUP) ui.mouse_button_middle_up();
+			if (!ui.changed_area.empty()) paint(hWnd);
+		}
+		else
+		{
+			if (message == WM_LBUTTONUP) mutator::mouse_button_left(false);
+			if (message == WM_RBUTTONUP) mutator::mouse_button_right(false);
+			if (message == WM_MBUTTONUP) mutator::mouse_button_middle(false);
+			if (!master_obl_izm.empty()) paint(hWnd);
+		}
 		return 0;
 	case WM_LBUTTONDBLCLK: case WM_RBUTTONDBLCLK: case WM_MBUTTONDBLCLK:
 		init_shift(wParam);
-		*n_s_double->operator i64* () = true;
-		if (message == WM_LBUTTONDBLCLK) n_down_left->run(0, n_down_left, flag_run);
-		if (message == WM_RBUTTONDBLCLK) n_down_right->run(0, n_down_right, flag_run);
-		if (message == WM_MBUTTONDBLCLK) n_down_middle->run(0, n_down_middle, flag_run);
-		if (!master_obl_izm.empty()) paint(hWnd);
+		if (new_ui)
+		{
+			ui.n_s_double = true;
+			if (message == WM_LBUTTONDBLCLK) ui.mouse_button_left_down();
+			if (message == WM_RBUTTONDBLCLK) ui.mouse_button_right_down();
+			if (message == WM_MBUTTONDBLCLK) ui.mouse_button_middle_down();
+			if (!ui.changed_area.empty()) paint(hWnd);
+		}
+		else
+		{
+			*n_s_double->operator i64* () = true;
+			if (message == WM_LBUTTONDBLCLK) n_down_left->run(0, n_down_left, flag_run);
+			if (message == WM_RBUTTONDBLCLK) n_down_right->run(0, n_down_right, flag_run);
+			if (message == WM_MBUTTONDBLCLK) n_down_middle->run(0, n_down_middle, flag_run);
+			if (!master_obl_izm.empty()) paint(hWnd);
+		}
 		return 0;
 	case WM_KEYDOWN:
 		switch (wParam)
@@ -191,7 +240,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		break;
 		case VK_CONTROL:
-			*n_s_ctrl  ->operator i64* () = 1;
+			if (new_ui)
+			{
+				ui.n_s_ctrl = true;
+			}
+			else
+			{
+				*n_s_ctrl  ->operator i64* () = 1;
+			}
 			break;
 		default:
 			if (new_ui)
@@ -210,7 +266,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYUP:
 		if (wParam == VK_CONTROL)
 		{
-			*n_s_ctrl  ->operator i64* () = 0;
+			if (new_ui)
+			{
+				ui.n_s_ctrl = false;
+			}
+			else
+			{
+				*n_s_ctrl  ->operator i64* () = 0;
+			}
 		}
 		return 0;
 	case WM_CHAR:
