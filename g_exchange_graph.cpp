@@ -124,15 +124,6 @@ _g_exchange_graph::_g_exchange_graph()
 	local_area = { {0, 200}, {0, 100} };
 }
 
-std::string date_to_ansi_string(time_t time)
-{ // *
-	tm a;
-	localtime_s(&a, &time);
-	char s[9];
-	strftime(s, sizeof(s), "%d.%m.%g", &a);
-	return s;
-}
-
 void _g_exchange_graph::ris2(_trans tr, bool final)
 {
 	_area a = tr(local_area);

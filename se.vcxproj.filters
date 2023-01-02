@@ -96,6 +96,9 @@
     <ClCompile Include="..\library\ui.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="e_exchange_graph.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetron.h">
@@ -177,6 +180,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="..\library\ui.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="e_exchange_graph.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

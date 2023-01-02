@@ -156,6 +156,7 @@
     <ClCompile Include="compressed_exchange_data.cpp" />
     <ClCompile Include="exchange_research.cpp" />
     <ClCompile Include="exchange_trade.cpp" />
+    <ClCompile Include="e_exchange_graph.cpp" />
     <ClCompile Include="froglif.cpp" />
     <ClCompile Include="g_exchange_graph.cpp" />
     <ClCompile Include="g_terminal.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="compressed_exchange_data.h" />
     <ClInclude Include="exchange_research.h" />
     <ClInclude Include="exchange_trade.h" />
+    <ClInclude Include="e_exchange_graph.h" />
     <ClInclude Include="froglif.h" />
     <ClInclude Include="g_exchange_graph.h" />
     <ClInclude Include="g_terminal.h" />
