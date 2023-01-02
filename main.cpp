@@ -347,6 +347,11 @@ void init_ui_elements()
 	term->local_area.y = _interval(10, 740);
 	ui.n_ko->add_child(term);
 	ui.n_act_key = term;
+	auto button = std::make_shared<_e_button>(&ui);
+	button->picture.set_from_text("00000000000000000000ff0f000108000108fc3f0804200808400808400810800810800820000920000940000a40000a80000c80000c00010800ff0f000000000000000000000000", ui.c00, ui.cc1);
+	button->trans.offset = { 600, 16 };
+	button->hint = L"загрузить статистику";
+	ui.n_ko->add_child(button);
 }
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
