@@ -1,11 +1,21 @@
 ﻿#pragma once
 
-#include "g_exchange_graph.h"
 #include "ui.h"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+struct _basic_curve2 // база для кривых
+{
+	virtual void draw(i64 n, _area area) = 0; // нарисовать 1 элемент
+	virtual _interval get_y(i64 n) = 0; // дипазон рисования по y
+	virtual ~_basic_curve2() {}
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct _e_exchange_graph : public _ui_element
 {
-	std::vector<_basic_curve*> curve; // кривая, 2я версия
+	std::vector<_basic_curve2*> curve; // кривая, 2я версия
 	i64 size_el = 6; // размер элемента
 
 	_e_exchange_graph(_ui* ui_);

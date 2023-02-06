@@ -3,6 +3,7 @@
 #include "ui.h"
 #include "win_basic.h"
 #include "e_terminal.h"
+#include "e_exchange_graph.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -395,6 +396,16 @@ void init_ui_elements()
 	button->trans.offset = { 824, 16 };
 	button->hint = L"size_el--";
 	ui.n_ko->add_child(button);
+
+	auto eg = std::make_shared<_e_exchange_graph>(&ui);
+	eg->local_area.x = _interval(490, 1570);
+	eg->local_area.y = _interval(50, 735);
+	ui.n_ko->add_child(eg);
+
+	auto polz = std::make_shared<_e_scrollbar>(&ui);
+	polz->vid = 2;
+	eg->add_child(polz);
+	polz->prilip();
 
 }
 

@@ -44,6 +44,13 @@ void _e_exchange_graph::update()
 void _e_exchange_graph::ris2(_trans tr)
 {
 	_area a = tr(local_area);
+
+	if (curve.empty())
+	{
+		ui->canvas.rectangle(a, ui->cc1);
+		return;
+	}
+
 	_interval y_; // диапазон у (grid)
 	static std::vector<time_t> time_; // отсчеты времени (grid)
 
