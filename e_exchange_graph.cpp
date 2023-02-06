@@ -1,9 +1,69 @@
-﻿#include "e_exchange_graph.h"
+﻿/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+рисование ломанной линии
+выделить нулевые оси у графика
+не подписывать сетку < 0, если все данные > 0 (и наоборот)
+сделать отображение секунд при увеличении графика цен
+преобразование координат при выводе графика
+
+~ коэфиициент - насколько числа красивые? у кого красивее - у покупки или у продажи? (у всех и у 10-15)
+
+распределение "вероятностей" вместо одного числа 0..+5 -> 0.2, +5..+10 -> 0.8, ... +50..+inf -> 0.01%
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <deque>
+#include "e_exchange_graph.h"
 #include "exchange_data.h"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+struct _candle_curve2 : public _basic_curve2 // классические свечи
+{
+	void draw(_bitmap& bm, i64 n, _area area) override; // нарисовать 1 элемент
+	_interval get_y(i64 n) override; // дипазон рисования по y
+};
+
+struct _prices_curve3 : public _basic_curve2 // посекундный спрос/предложение
+{
+	static const int max_part = 22000; // максимально количество элементов ss
+	std::deque<_supply_and_demand> part_ss; // часть супер-статистики
+	i64 begin_ss = 0; // начало куска супер-статистики
+
+	void draw(_bitmap& bm, i64 n, _area area) override; // нарисовать 1 элемент
+	_interval get_y(i64 n) override; // дипазон рисования по y
+};
+
+struct _prices_curve4 : public _basic_curve2 // посекундный спрос/предложение (цвет - дельта)
+{
+	static const int max_part = 22000; // максимально количество элементов ss
+	std::deque<_supply_and_demand> part_ss; // часть супер-статистики
+	i64 begin_ss = 0; // начало куска супер-статистики
+
+	void draw(_bitmap& bm, i64 n, _area area) override; // нарисовать 1 элемент
+	_interval get_y(i64 n) override; // дипазон рисования по y
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void start_se2()
+{
+	if (!ed.empty()) return;
+	ed.load_from_file();
+
+	if (!graph2) return;
+	graph2->cha_area();
+
+	update_index_data();
+	graph2->curve.push_back(new _candle_curve2);
+	graph2->curve.push_back(new _prices_curve4);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 _e_exchange_graph::_e_exchange_graph(_ui* ui_) : _ui_element(ui_)
 {
-	egraph = this;
+	graph2 = this;
 	local_area = { {0, 200}, {0, 100} };
 }
 
@@ -101,7 +161,7 @@ void _e_exchange_graph::ris2(_trans tr)
 			double ymi = a.y.max - (il.min - zmin) * a.y.length() / (zmax - zmin);
 			double yma = a.y.max - (il.max - zmin) * a.y.length() / (zmax - zmin);
 			double x = r_el * i + a.x.min;
-			curve[j]->draw(ii, { {x, x + r_el}, {yma, ymi} });
+			curve[j]->draw(ui->canvas, ii, { {x, x + r_el}, {yma, ymi} });
 		}
 	}
 	// рисование сетки
@@ -202,4 +262,285 @@ void _e_exchange_graph::ris2(_trans tr)
 	ui->canvas.text16n(std::max(a.x.min, 0.0) + dex + 10, std::max(a.y.min, 0.0) + 61,
 		std::to_string(ed.size()).data(), 2, 0x80ff0000, 0xA0000000);
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void _candle_curve2::draw(_bitmap& bm, i64 n, _area area)
+{
+	auto aa = &index_data[n];
+	double min_ = aa->min * c_unpak;
+	double max_ = aa->max * c_unpak;
+	double first_ = aa->first * c_unpak;
+	double last_ = aa->last * c_unpak;
+
+	_iinterval xx = area.x;
+	xx.min++;
+	xx.max--;
+	if (xx.empty()) return;
+
+	constexpr uint col_rost = 0xff28A050; // цвет ростущей свечки
+	constexpr uint col_pade = 0xff186030; // цвет падающей свечки
+	double yfi, yla;
+	if (min_ < max_)
+	{
+		yfi = area.y.max - area.y.length() * (first_ - min_) / (max_ - min_);
+		yla = area.y.max - area.y.length() * (last_ - min_) / (max_ - min_);
+	}
+	else
+	{
+		yfi = yla = area.y.min;
+	}
+	if (first_ <= last_)
+	{
+		bm.fill_rectangle(_iarea{ xx, {yla, yfi} }, { col_rost });
+		bm.line({ xx.center(), area.y.max }, { xx.center(), area.y.min }, col_rost);
+	}
+	else
+	{
+		bm.fill_rectangle(_iarea{ xx, {yfi, yla} }, { col_pade });
+		bm.line({ xx.center(), area.y.max }, { xx.center(), area.y.min }, col_pade);
+	}
+}
+
+_interval _candle_curve2::get_y(i64 n)
+{
+	auto a = &index_data[n];
+	return { a->min, a->max };
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void _prices_curve3::draw(_bitmap& bm, i64 n, _area area)
+{
+	static _supply_and_demand pri[61]; // цены
+	double min, max; // разброс по y
+	for (auto& i : pri) i.clear();
+
+	for (i64 i = index_data[n].ncc.min; i < index_data[n].ncc.max; i++)
+	{
+		if (i < begin_ss)
+		{
+			i64 delta = begin_ss - i;
+			if (delta >= max_part)
+				part_ss.clear();
+			else
+			{
+				_supply_and_demand w;
+				w.clear();
+				for (int i_ = 0; i_ < delta; i_++)
+				{
+					part_ss.push_front(w);
+					if (part_ss.size() > max_part) part_ss.pop_back();
+				}
+			}
+			begin_ss = i;
+		}
+		if (i >= begin_ss + (i64)part_ss.size())
+		{
+			_supply_and_demand w;
+			w.clear();
+			i64 delta = i - (begin_ss + (int)part_ss.size()) + 1;
+			if (delta >= max_part)
+			{
+				part_ss.clear();
+				part_ss.push_back(w);
+				begin_ss = i;
+			}
+			else
+				for (int i_ = 0; i_ < delta; i_++)
+				{
+					part_ss.push_back(w);
+					if (part_ss.size() > max_part)
+					{
+						part_ss.pop_front();
+						begin_ss++;
+					}
+				}
+		}
+		i64 ii = i - begin_ss;
+		if (part_ss[ii].empty()) part_ss[ii] = ed[i];
+		pri[part_ss[ii].time % 60] = part_ss[ii];
+	}
+	min = index_data[n].minmin - c_unpak;
+	max = index_data[n].maxmax;
+	_iinterval xx = area.x;
+	xx.min++;
+	i64 dx = xx.length();
+	if (dx < 2) return;
+	i64 step = 60;
+	if (dx >= 4) step = 30;
+	if (dx >= 6) step = 20;
+	if (dx >= 8) step = 15;
+	if (dx >= 10) step = 12;
+	if (dx >= 12) step = 10;
+	if (dx >= 20) step = 6;
+	if (dx >= 24) step = 5;
+	if (dx >= 30) step = 4;
+	if (dx >= 40) step = 3;
+	if (dx >= 60) step = 2;
+	if (dx >= 120) step = 1;
+	i64 kol = 60 / step;
+	double dd = max - min;
+	double ddy = area.y.max - area.y.min;
+	for (i64 i = 0; i < kol; i++)
+	{
+		i64 ss_ = i * step;
+		while (pri[ss_].empty())
+		{
+			if (ss_ + 1 >= (i + 1) * step) break;
+			ss_++;
+		}
+		if (pri[ss_].empty()) continue;
+		i64 xx1 = xx.min + dx * i / kol;
+		i64 xx2 = xx.min + dx * (i + 1) / kol - 1;
+		if (pri[ss_].supply[3].price < pri[ss_].demand[3].price)
+		{
+			//		xx1++;
+		}
+		for (int j = size_offer - 1; j >= 0; j--)
+		{
+			double ce = pri[ss_].supply[j].price * c_unpak;
+			_iinterval yy(area.y.min + (max - ce) * ddy / dd, area.y.min + (max - ce + c_unpak) * ddy / dd);
+			yy.min++;
+			yy.max--;
+			if (yy.empty()) continue;
+			uint q = (uint)sqrt(pri[ss_].supply[j].number) + 32;
+			if (q > 255) q = 255;
+			uint cc = (q << 8) + (q << 16) + 0x60000000;
+			bm.fill_rectangle(_iarea{ {xx1, xx2}, yy }, { cc });
+		}
+		for (int j = 0; j < size_offer; j++)
+		{
+			double ce = pri[ss_].demand[j].price * c_unpak;
+			_iinterval yy(area.y.min + (max - ce) * ddy / dd, area.y.min + (max - ce + c_unpak) * ddy / dd);
+			yy.min++;
+			yy.max--;
+			if (yy.empty()) continue;
+			uint q = (uint)sqrt(pri[ss_].demand[j].number) + 32;
+			if (q > 255) q = 255;
+			uint cc = q + (q << 8) + 0x60000000;
+			bm.fill_rectangle(_iarea{ {xx1, xx2}, yy }, { cc });
+		}
+	}
+}
+
+_interval _prices_curve3::get_y(i64 n)
+{
+	auto a = &index_data[n];
+	return { a->minmin - c_unpak, a->maxmax };
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void _prices_curve4::draw(_bitmap& bm, i64 n, _area area)
+{
+	static _supply_and_demand pri[61]; // цены
+	double min, max; // разброс по y
+	for (auto& i : pri) i.clear();
+
+	for (i64 i = index_data[n].ncc.min; i < index_data[n].ncc.max; i++)
+	{
+		if (i < begin_ss)
+		{
+			i64 delta = begin_ss - i;
+			if (delta >= max_part)
+				part_ss.clear();
+			else
+			{
+				_supply_and_demand w;
+				w.clear();
+				for (int i_ = 0; i_ < delta; i_++)
+				{
+					part_ss.push_front(w);
+					if (part_ss.size() > max_part) part_ss.pop_back();
+				}
+			}
+			begin_ss = i;
+		}
+		if (i >= begin_ss + (i64)part_ss.size())
+		{
+			_supply_and_demand w;
+			w.clear();
+			i64 delta = i - (begin_ss + (int)part_ss.size()) + 1;
+			if (delta >= max_part)
+			{
+				part_ss.clear();
+				part_ss.push_back(w);
+				begin_ss = i;
+			}
+			else
+				for (int i_ = 0; i_ < delta; i_++)
+				{
+					part_ss.push_back(w);
+					if (part_ss.size() > max_part)
+					{
+						part_ss.pop_front();
+						begin_ss++;
+					}
+				}
+		}
+		i64 ii = i - begin_ss;
+		if (part_ss[ii].empty()) part_ss[ii] = ed[i];
+		pri[part_ss[ii].time % 60] = part_ss[ii];
+	}
+	min = index_data[n].minmin - c_unpak;
+	max = index_data[n].maxmax;
+	_iinterval xx = area.x;
+	xx.min++;
+	i64 dx = xx.length();
+	if (dx < 2) return;
+	i64 step = 60;
+	if (dx >= 4) step = 30;
+	if (dx >= 6) step = 20;
+	if (dx >= 8) step = 15;
+	if (dx >= 10) step = 12;
+	if (dx >= 12) step = 10;
+	if (dx >= 20) step = 6;
+	if (dx >= 24) step = 5;
+	if (dx >= 30) step = 4;
+	if (dx >= 40) step = 3;
+	if (dx >= 60) step = 2;
+	if (dx >= 120) step = 1;
+	i64 kol = 60 / step;
+	double dd = max - min;
+	double ddy = area.y.max - area.y.min;
+	i64 ss_pr = -1;
+	for (i64 i = 0; i < kol; i++)
+	{
+		i64 ss_ = i * step;
+		while (pri[ss_].empty())
+		{
+			if (ss_ + 1 >= (i + 1) * step) break;
+			ss_++;
+		}
+		if (pri[ss_].empty()) continue;
+		i64 xx1 = xx.min + dx * i / kol;
+		i64 xx2 = xx.min + dx * (i + 1) / kol - 1;
+		for (int j = size_offer - 1; j >= 0; j--)
+		{
+			double ce = pri[ss_].supply[j].price * c_unpak;
+			_iinterval yy(area.y.min + (max - ce) * ddy / dd, area.y.min + (max - ce + c_unpak) * ddy / dd);
+			yy.min++;
+			yy.max--;
+			if (yy.empty()) continue;
+
+			uint cc = 0x40ffffff;
+			if (ss_pr >= 0)
+			{
+				if (pri[ss_].supply[j].number > pri[ss_pr].supply[j].number) cc = 0x9000ff00;
+				if (pri[ss_].supply[j].number < pri[ss_pr].supply[j].number) cc = 0x70ff0000;
+			}
+			if (cc != 0x40ffffff) bm.fill_rectangle(_iarea{ {xx1, xx2}, yy }, { cc });
+		}
+		ss_pr = ss_;
+	}
+}
+
+_interval _prices_curve4::get_y(i64 n)
+{
+	auto a = &index_data[n];
+	return { a->minmin - c_unpak, a->maxmax };
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

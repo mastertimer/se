@@ -353,6 +353,7 @@ void init_ui_elements()
 	button->picture.set_from_text("00000000000000000000ff0f000108000108fc3f0804200808400808400810800810800820000920000940000a40000a80000c80000c00010800ff0f000000000000000000000000", ui.c00, ui.cc1);
 	button->trans.offset = { 600, 16 };
 	button->hint = L"загрузить статистику";
+	button->run = start_se2;
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);

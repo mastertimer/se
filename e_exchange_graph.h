@@ -6,7 +6,7 @@
 
 struct _basic_curve2 // база для кривых
 {
-	virtual void draw(i64 n, _area area) = 0; // нарисовать 1 элемент
+	virtual void draw(_bitmap& bm, i64 n, _area area) = 0; // нарисовать 1 элемент
 	virtual _interval get_y(i64 n) = 0; // дипазон рисования по y
 	virtual ~_basic_curve2() {}
 };
@@ -30,4 +30,8 @@ private:
 	int v_vib = 0; // диапазон полосы прокрутки
 };
 
-inline _e_exchange_graph* egraph = nullptr; // график
+inline _e_exchange_graph* graph2 = nullptr; // график
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void start_se2();
