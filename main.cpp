@@ -61,7 +61,6 @@ void init_shift(WPARAM wparam) // !!! сделать по аналогии c ctr
 		ui.n_s_left = wparam & MK_LBUTTON;
 		ui.n_s_right = wparam & MK_RBUTTON;
 		ui.n_s_middle = wparam & MK_MBUTTON;
-		ui.n_s_double = false;
 	}
 	else
 	{
@@ -191,10 +190,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		init_shift(wParam);
 		if (new_ui)
 		{
-			ui.n_s_double = true;
-			if (message == WM_LBUTTONDBLCLK) ui.mouse_button_left_down();
-			if (message == WM_RBUTTONDBLCLK) ui.mouse_button_right_down();
-			if (message == WM_MBUTTONDBLCLK) ui.mouse_button_middle_down();
+			if (message == WM_LBUTTONDBLCLK) ui.mouse_button_left_dblclk();
+			if (message == WM_RBUTTONDBLCLK) ui.mouse_button_right_dblclk();
+			if (message == WM_MBUTTONDBLCLK) ui.mouse_button_middle_dblclk();
 			if (!ui.changed_area.empty()) paint(hWnd);
 		}
 		else
