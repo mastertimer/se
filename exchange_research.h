@@ -36,12 +36,18 @@ _delta_supply_and_demand operator-(const _supply_and_demand& a, const _supply_an
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct _g_terminal;
+struct _e_terminal;
 
 void exchange_fun1(_g_terminal& trm, const std::vector<std::wstring>& parameters);
 void exchange_fun2(_g_terminal& trm, const std::vector<std::wstring>& parameters);
 void exchange_fun3(_g_terminal& trm, const std::vector<std::wstring>& parameters);
 void test_filter(_g_terminal& trm, const std::vector<std::wstring>& parameters);
+void exchange__fun1(_e_terminal& trm, const std::vector<std::wstring>& parameters);
+void exchange__fun2(_e_terminal& trm, const std::vector<std::wstring>& parameters);
+void exchange__fun3(_e_terminal& trm, const std::vector<std::wstring>& parameters);
+void test__filter(_e_terminal& trm, const std::vector<std::wstring>& parameters);
 
 _g_terminal& operator << (_g_terminal& t, const _delta_supply_and_demand& delta);
+_e_terminal& operator << (_e_terminal& t, const _delta_supply_and_demand& delta);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
