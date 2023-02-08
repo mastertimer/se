@@ -4,6 +4,8 @@
 #include "win_basic.h"
 #include "e_terminal.h"
 #include "e_exchange_graph.h"
+#include "exchange_data.h"
+#include "exchange_trade.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -339,6 +341,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
+void read_cena(_e_button& eb)
+{
+	static auto fun = std::make_shared<_e_function>(eb.ui, scan_supply_and_demand);
+	eb.ui->n_timer1000.erase(fun);
+	if (eb.checked) eb.ui->n_timer1000.insert(fun);
+}
+
 void init_ui_elements()
 {
 	auto term = std::make_shared<_e_terminal>(&ui);
@@ -351,19 +360,22 @@ void init_ui_elements()
 	button->picture.set_from_text("00000000000000000000ff0f000108000108fc3f0804200808400808400810800810800820000920000940000a40000a80000c80000c00010800ff0f000000000000000000000000", ui.c00, ui.cc1);
 	button->trans.offset = { 600, 16 };
 	button->hint = L"загрузить статистику";
-	button->run = start_se2;
+	button->run = [](_e_button&) { start_se2(); };
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);
 	button->picture.set_from_text("000000000000fcff0744000a440012440022440022440022c4002284ff21040020040020040020040020040020040020040020040020040020040020040020fcff3f000000000000", ui.c00, ui.cc1);
 	button->trans.offset = { 632, 16 };
 	button->hint = L"сохранить статистику";
+	button->run = [](_e_button&) { ed.save_to_file(); };
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);
 	button->picture.set_from_text("00000000000000380000fe0000830100010180010380010380010300010100830100ff00803900c000006000003000001800000c0000060000020000000000000000000000000000", ui.c00, ui.cc1);
+	button->checkbox = true;
 	button->trans.offset = { 664, 16 };
 	button->hint = L"чтение цен";
+	button->run = read_cena;
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);
