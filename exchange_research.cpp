@@ -1,7 +1,5 @@
 ﻿#include "exchange_research.h"
-#include "g_exchange_graph.h"
 #include "exchange_data.h"
-#include "g_terminal.h"
 #include "e_terminal.h"
 #include "mediator.h"
 #include "reading_sad.h"

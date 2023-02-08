@@ -35,7 +35,6 @@ _delta_supply_and_demand operator-(const _supply_and_demand& a, const _supply_an
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct _g_terminal;
 struct _e_terminal;
 
 void exchange_fun1(_g_terminal& trm, const std::vector<std::wstring>& parameters);
