@@ -306,4 +306,4 @@ namespace mutator
 		if (pressed) n_down_middle->run(0, n_down_middle, flag_run); else n_up_middle->run(0, n_up_middle, flag_run);
 	}
 
-}
+} // прощай старый друг
