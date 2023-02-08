@@ -192,9 +192,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		init_shift(wParam);
 		if (new_ui)
 		{
-			if (message == WM_LBUTTONDBLCLK) ui.mouse_button_left_dblclk();
-			if (message == WM_RBUTTONDBLCLK) ui.mouse_button_right_dblclk();
-			if (message == WM_MBUTTONDBLCLK) ui.mouse_button_middle_dblclk();
+			if (message == WM_LBUTTONDBLCLK) ui.mouse_button_left_down(true);
+			if (message == WM_RBUTTONDBLCLK) ui.mouse_button_right_down(true);
+			if (message == WM_MBUTTONDBLCLK) ui.mouse_button_middle_down(true);
 			if (!ui.changed_area.empty()) paint(hWnd);
 		}
 		else
