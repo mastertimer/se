@@ -59,6 +59,18 @@ void start_se2()
 	graph2->curve.push_back(new _prices_curve4);
 }
 
+void expand_elements_graph2()
+{
+	graph2->size_el++;
+	graph2->cha_area();
+}
+
+void narrow_graph_elements2()
+{
+	if (graph2->size_el > 1) graph2->size_el--;
+	graph2->cha_area();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 _e_exchange_graph::_e_exchange_graph(_ui* ui_) : _ui_element(ui_)

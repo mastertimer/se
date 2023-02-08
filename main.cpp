@@ -380,32 +380,38 @@ void init_ui_elements()
 
 	button = std::make_shared<_e_button>(&ui);
 	button->picture.set_from_text("000000000000000000006000007c08003608001804001c02000e02000301008101808000c0c00040220020120030920000de00003c00000400000000000000000000000000000000", ui.c00, ui.cc1);
+	button->checkbox = true;
 	button->trans.offset = { 696, 16 };
 	button->hint = L"торговля";
+	button->run = [](_e_button& bu) { change_can_trade(bu.checked); };
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);
 	button->picture.set_from_text("00000000000000000000000000800300c00300e00100fc00006600007000003000002c00002400000300800100c00000400000200000000000000000000000000000000000000000", ui.c00, ui.cc1);
 	button->trans.offset = { 728, 16 };
 	button->hint = L"купить";
+	button->run = [](_e_button&) { buy_shares(); };
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);
 	button->picture.set_from_text("00000000000000000000000000001800000c00000400000200800100c000006000002000001100800900803400801a00800700800300800000000000000000000000000000000000", ui.c00, ui.cc1);
 	button->trans.offset = { 760, 16 };
 	button->hint = L"продать";
+	button->run = [](_e_button&) { sell_shares(); };
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);
 	button->picture.set_from_text("00000000000000000000000000000000000000ff0380010a90001a880022cc006246007efe001acc000a90000280000280000280810300ff00000000000000000000000000000000", ui.c00, ui.cc1);
 	button->trans.offset = { 792, 16 };
 	button->hint = L"size_el++";
+	button->run = [](_e_button&) { expand_elements_graph2(); };
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);
 	button->picture.set_from_text("00000000000000000000000000fc0000870000810180000180003398001a90000eb700fefc0003a00007b0003d880001800001801f0100f000000000000000000000000000000000", ui.c00, ui.cc1);
 	button->trans.offset = { 824, 16 };
 	button->hint = L"size_el--";
+	button->run = [](_e_button&) { narrow_graph_elements2(); };
 	ui.n_ko->add_child(button);
 
 	auto eg = std::make_shared<_e_exchange_graph>(&ui);
