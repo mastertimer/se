@@ -92,8 +92,7 @@ void _e_exchange_graph::mouse_move_left2(_xy r)
 	if (*ii < 0) *ii = 0;
 	if (*ii > 1) *ii = 1;
 	polz->cha_area();
-	//update(); // новое
-//	polz->run(0, polz, flag_run); // старое
+	update();
 }
 
 void _e_exchange_graph::update()
