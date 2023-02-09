@@ -54,9 +54,6 @@
     <ClCompile Include="library\statistics.cpp">
       <Filter>Исходные файлы\library</Filter>
     </ClCompile>
-    <ClCompile Include="froglif.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="..\library\basic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -118,9 +115,6 @@
     </ClInclude>
     <ClInclude Include="library\statistics.h">
       <Filter>Исходные файлы\library</Filter>
-    </ClInclude>
-    <ClInclude Include="froglif.h">
-      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="..\library\basic.h">
       <Filter>Файлы заголовков</Filter>
