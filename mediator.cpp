@@ -380,7 +380,7 @@ int bad_string_to_int(std::wstring& s)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void buy_stock(_tetron* tt, bool buy)
+void buy_stock(std::shared_ptr<_ui_element> tt, bool buy)
 {
 	int otst_20 = 1; // 20 >= x >= 1, 1 - лучшая цена
 	static int KKK;

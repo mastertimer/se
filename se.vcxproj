@@ -166,7 +166,6 @@
     <ClCompile Include="se_library\exchange_basic.cpp" />
     <ClCompile Include="se_library\exchange_data.cpp" />
     <ClCompile Include="se_library\reading_sad.cpp" />
-    <ClCompile Include="t_function.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\library\basic.h" />
@@ -192,7 +191,6 @@
     <ClInclude Include="se_library\exchange_basic.h" />
     <ClInclude Include="se_library\exchange_data.h" />
     <ClInclude Include="se_library\reading_sad.h" />
-    <ClInclude Include="t_function.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="mutator.ico" />

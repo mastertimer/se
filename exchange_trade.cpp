@@ -1,8 +1,7 @@
-﻿#include "g_exchange_graph.h"
-#include "mediator.h"
-#include "t_function.h"
+﻿#include "mediator.h"
 #include "exchange_trade.h"
 #include "reading_sad.h"
+#include "e_exchange_graph.h"
 
 i64 can_trade = -6; // разрешенное количество сделок (купить-продать = 2 сделки), отрицательное - неактивно
 int vrema_prodat = 0; // время когда нужно продать
@@ -15,7 +14,7 @@ void scan_supply_and_demand()
 	ed.push_back(*a);
 	update_index_data();
 
-	graph->run(nullptr, graph, flag_run);
+	graph2->update();
 
 	// всякие проверки на начало покупки !!!!
 	if (can_trade <= 0) return;

@@ -24,9 +24,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="t_function.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="compressed_exchange_data.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -89,9 +86,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="t_function.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="compressed_exchange_data.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

@@ -1,5 +1,4 @@
-﻿#include "tetron.h"
-#include "ui.h"
+﻿#include "ui.h"
 #include "win_basic.h"
 #include "e_terminal.h"
 #include "e_exchange_graph.h"
@@ -173,7 +172,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (!ui.changed_area.empty()) paint(hWnd);
 			break;
 		case 2:
-//			ui.run_timer250();
+			ui.run_timer250();
 			break;
 		}
 		return 0;
@@ -182,7 +181,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		SetTimer(hWnd, 2, 250, 0); // более быстрый, без отрисовки
 		return 0;
 	case WM_DESTROY:
-		run_before_del_link = false; // разобраться почему без этого - ошибка
 		KillTimer(hWnd, 1);
 		KillTimer(hWnd, 2);
 		PostQuitMessage(0);
@@ -301,7 +299,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	if (!hWnd) return 3;
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
-	set_cursor((*n_perenos->operator i64 * ()) ? _cursor::size_all : _cursor::normal);
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
