@@ -191,7 +191,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void read_cena(_e_button& eb)
 {
-	static auto fun = std::make_shared<_e_function>(eb.ui, scan_supply_and_demand);
+	static auto fun = std::make_shared<_e_function>(eb.ui, []() { scan_supply_and_demand(ui); });
 	eb.ui->n_timer1000.erase(fun);
 	if (eb.checked) eb.ui->n_timer1000.insert(fun);
 }
@@ -238,14 +238,14 @@ void init_ui_elements()
 	button->picture.set_from_text("00000000000000000000000000800300c00300e00100fc00006600007000003000002c00002400000300800100c00000400000200000000000000000000000000000000000000000", ui.c00, ui.cc1);
 	button->trans.offset = { 728, 16 };
 	button->hint = L"купить";
-	button->run = [](_e_button&) { buy_shares(); };
+	button->run = [](_e_button&) { buy_shares(ui); };
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);
 	button->picture.set_from_text("00000000000000000000000000001800000c00000400000200800100c000006000002000001100800900803400801a00800700800300800000000000000000000000000000000000", ui.c00, ui.cc1);
 	button->trans.offset = { 760, 16 };
 	button->hint = L"продать";
-	button->run = [](_e_button&) { sell_shares(); };
+	button->run = [](_e_button&) { sell_shares(ui); };
 	ui.n_ko->add_child(button);
 
 	button = std::make_shared<_e_button>(&ui);

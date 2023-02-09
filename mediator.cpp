@@ -2,6 +2,7 @@
 
 #include "mediator.h"
 #include "reading_sad.h"
+#include "ui.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -380,16 +381,16 @@ int bad_string_to_int(std::wstring& s)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void buy_stock(std::shared_ptr<_ui_element> tt, bool buy)
+void buy_stock(_ui_element* tt, bool buy)
 {
 	int otst_20 = 1; // 20 >= x >= 1, 1 - лучшая цена
 	static int KKK;
 	static bool win8 = false;
 	static __int64 n = 0;
 	// шаг 01: внедрение и инициализация
-	if (tt->link.empty())
+	if (tt->ui->n_timer1000.count(tt->shared_from_this()) == 0)
 	{
-		n_timer250->add_flags(tt, flag_run);
+		tt->ui->n_timer1000.insert(tt->shared_from_this());
 		return;
 	}
 	// пауза
@@ -654,7 +655,7 @@ void buy_stock(std::shared_ptr<_ui_element> tt, bool buy)
 		n = 40;
 		return;
 	}
-	delete tt;
+	tt->ui->n_timer1000.erase(tt->shared_from_this());
 	n = 0;
 	zamok_pokupki = false;
 }

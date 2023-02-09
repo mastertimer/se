@@ -58,7 +58,7 @@ private:
 inline _recognize recognize;
 inline bool zamok_pokupki = false; // простой блокиратор
 
-void buy_stock(std::shared_ptr<struct _ui_element> tt, bool buy);
+void buy_stock(struct _ui_element* tt, bool buy);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

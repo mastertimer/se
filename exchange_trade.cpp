@@ -6,7 +6,7 @@
 i64 can_trade = -6; // разрешенное количество сделок (купить-продать = 2 сделки), отрицательное - неактивно
 int vrema_prodat = 0; // время когда нужно продать
 
-void scan_supply_and_demand()
+void scan_supply_and_demand(_ui& ui)
 {
 	if (zamok_pokupki) return;
 	auto a = read_sad_from_screen();
@@ -33,8 +33,9 @@ void scan_supply_and_demand()
 						}*/
 			zamok_pokupki = true;
 			can_trade--;
-			_t_function* fu = new _t_function(36);
-			fu->run(0, fu, flag_run);
+			auto efun = std::make_shared<_e_function>(&ui);
+			efun->run = [tt = efun.get()](){ buy_stock(tt, false); };
+			efun->run();
 		}
 		return;
 	}
@@ -56,8 +57,9 @@ void scan_supply_and_demand()
 	zamok_pokupki = true;
 	vrema_prodat = a->time + ti * 60;
 	can_trade--;
-	_t_function* fu = new _t_function(35);
-	fu->run(0, fu, flag_run);
+	auto efun = std::make_shared<_e_function>(&ui);
+	efun->run = [tt = efun.get()]() { buy_stock(tt, true); };
+	efun->run();
 }
 
 void change_can_trade(bool can)
@@ -65,19 +67,21 @@ void change_can_trade(bool can)
 	can_trade = (can) ? abs(can_trade) : -abs(can_trade);
 }
 
-void buy_shares()
+void buy_shares(_ui& ui)
 {
 	if (zamok_pokupki) return;
 	zamok_pokupki = true;
-	_t_function* fu = new _t_function(35);
-	fu->run(0, fu, flag_run);
+	auto efun = std::make_shared<_e_function>(&ui);
+	efun->run = [tt = efun.get()]() { buy_stock(tt, true); };
+	efun->run();
 }
 
-void sell_shares()
+void sell_shares(_ui& ui)
 {
 	if (zamok_pokupki) return;
 	zamok_pokupki = true;
-	_t_function* fu = new _t_function(36);
-	fu->run(0, fu, flag_run);
+	auto efun = std::make_shared<_e_function>(&ui);
+	efun->run = [tt = efun.get()]() { buy_stock(tt, false); };
+	efun->run();
 }
 
