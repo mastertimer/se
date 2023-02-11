@@ -134,9 +134,6 @@
     <ClInclude Include="..\library\multi_string.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\library\speed.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="..\library\win_basic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>

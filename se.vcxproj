@@ -174,7 +174,6 @@
     <ClInclude Include="..\library\hash.h" />
     <ClInclude Include="..\library\json.h" />
     <ClInclude Include="..\library\multi_string.h" />
-    <ClInclude Include="..\library\speed.h" />
     <ClInclude Include="..\library\ui.h" />
     <ClInclude Include="..\library\win_basic.h" />
     <ClInclude Include="compressed_exchange_data.h" />
