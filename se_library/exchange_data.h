@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "compressed_exchange_data.h"
+#include "exchange_basic.h"
 #include "geometry.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -10,7 +10,6 @@ struct _exchange_data: public std::vector<_supply_and_demand>
 	i64 info_compressed_size = 0;
 
 	void push_back(const _supply_and_demand& c);
-	void operator=(_compressed_exchange_data& cs);
 	void save_to_file();
 	void load_from_file();
 };

@@ -3,16 +3,18 @@
 #include "exchange_basic.h"
 
 struct _compressed_exchange_data
-{
-	i64 size = 0; // количество записей
-	_bit_vector data; // сжатые данные
+{ // *
+	i64 size() const { return size_; }
 
 	bool add(const _supply_and_demand& c); // добавить цены (сжать)
 	bool read(_supply_and_demand& c); // прочитать цены (расжать)
-	void push_to(_stack& mem);
+
+	void push_to(_stack& mem) const;
 	void pop_from(_stack& mem);
 
 private:
+	i64 size_ = 0; // количество записей
+	_bit_vector data; // сжатые данные
 	std::vector<_offer> base_buy; // база покупки (первых 20 - последние цены)
 	std::vector<_offer> base_sale; // база продажи (первых 20 - последние цены)
 	time_t back_time = 0; // время прочитанных цен

@@ -1,6 +1,7 @@
 ﻿#include <ctime>
 #include <thread>
 
+#include "compressed_exchange_data.h"
 #include "exchange_data.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,20 +50,20 @@ void _exchange_data::load_from_file()
 	for (i64 i = 0; i < number_thread; i++)
 	{
 		cs[i].pop_from(mem);
-		v += cs[i].size;
+		v += cs[i].size();
 	}
 	resize(v);
 
 	auto fun = [](_compressed_exchange_data* co, _supply_and_demand* sad)
 	{
-		for (i64 i = 0; i < co->size; i++) co->read(sad[i]);
+		for (i64 i = 0; i < co->size(); i++) co->read(sad[i]);
 	};
 
 	v = 0;
 	for (i64 i = 0; i < number_thread; i++)
 	{
 		threads.emplace_back(fun, &cs[i], &(*this)[v]);
-		v += cs[i].size;
+		v += cs[i].size();
 	}
 	for (auto& th : threads) th.join();
 }
@@ -75,18 +76,6 @@ void _exchange_data::push_back(const _supply_and_demand& c)
 		if (c.time <= back().time) return;
 	}
 	std::vector<_supply_and_demand>::push_back(c);
-}
-
-void _exchange_data::operator=(_compressed_exchange_data& cs)
-{
-	clear();
-	reserve(cs.size);
-	_supply_and_demand c;
-	for (i64 i = 0; i < cs.size; i++)
-	{
-		cs.read(c);
-		std::vector<_supply_and_demand>::push_back(c);
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -777,14 +777,14 @@ bool _compressed_exchange_data::read(_supply_and_demand& c)
 	return true;
 }
 
-void _compressed_exchange_data::push_to(_stack& mem)
+void _compressed_exchange_data::push_to(_stack& mem) const
 {
-	mem << data << size;
+	mem << data << size_;
 }
 
 void _compressed_exchange_data::pop_from(_stack& mem)
 {
-	mem >> data >> size;
+	mem >> data >> size_;
 }
 
 bool _compressed_exchange_data::add0(const _supply_and_demand& c)
@@ -982,7 +982,7 @@ bool _compressed_exchange_data::add1(const _supply_and_demand& c)
 bool _compressed_exchange_data::add(const _supply_and_demand& c)
 {
 	auto s_data = data.size();
-	if (size == 0)
+	if (size_ == 0)
 	{
 		data.push(c.time, 31);
 		if (!add0(c)) goto err;
@@ -993,7 +993,7 @@ bool _compressed_exchange_data::add(const _supply_and_demand& c)
 		if (dt == 1) data.push(0); else { data.push(1); data.push(dt, 31); }
 		if (!add1(c)) goto err;
 	}
-	size++;
+	size_++;
 	back_time = c.time;
 	return true;
 err:
