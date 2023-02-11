@@ -8,7 +8,6 @@
 
 namespace
 {
-	constexpr wchar_t file_stock_statistics[] = L"..\\..\\data\\base.c3";
 	constexpr i64 number_thread = 16; // 16, не менять
 }
 
@@ -33,7 +32,6 @@ void _exchange_data::save_to_file()
 	for (auto& th : threads) th.join();
 	_stack mem;
 	for (i64 i = 0; i < number_thread; i++)	cs[i].push_to(mem);
-	info_compressed_size = mem.size;
 	mem.save_to_file(fn);
 }
 
@@ -45,7 +43,6 @@ void _exchange_data::load_from_file()
 
 	_stack mem;
 	mem.load_from_file(fn);
-	info_compressed_size = mem.size;
 	i64 v = 0;
 	for (i64 i = 0; i < number_thread; i++)
 	{

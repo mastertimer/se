@@ -66,8 +66,9 @@ void test__filter(_e_terminal& trm, const std::vector<std::wstring>& parameters)
 void exchange__fun1(_e_terminal& trm, const std::vector<std::wstring>& parameters)
 { // общая информация
 	start_se();
+	auto file_size = std::filesystem::file_size(exe_path / file_stock_statistics);
 	trm.print(L"количество цен: " + std::to_wstring(ed.size()));
-	trm.print(L"размер сжатой записи: " + double_to_wstring(double(ed.info_compressed_size) / ed.size(), 1)); // 20.2
+	trm.print(L"размер сжатой записи: " + double_to_wstring(double(file_size) / ed.size(), 1)); // 20.2
 	const _supply_and_demand* prev = nullptr;
 	for (auto& i : ed)
 	{
