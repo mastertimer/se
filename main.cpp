@@ -21,16 +21,6 @@ void change_window_text(HWND hwnd)
 	SetWindowText(hwnd, s);*/
 }
 
-void paint(HWND hwnd)
-{
-	HDC hdc = GetDC(hwnd);
-	RECT rect;
-	GetClientRect(hwnd, &rect);
-	ui.draw({ rect.right, rect.bottom });
-	BitBlt(hdc, 0, 0, rect.right, rect.bottom, ui.canvas.hdc, 0, 0, SRCCOPY);
-	ReleaseDC(hwnd, hdc);
-}
-
 void init_shift(WPARAM wparam) // !!! сделать по аналогии c ctrl
 {
 	ui.n_s_shift = wparam & MK_SHIFT;
@@ -66,7 +56,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		init_shift(wParam);
 		ui.mouse_xy = { ((double)(short)LOWORD(lParam)), ((double)(short)HIWORD(lParam)) };
 		ui.mouse_move();
-		if (!ui.changed_area.empty()) paint(hWnd);
+		if (!ui.changed_area.empty()) ui.paint(hWnd);
 		return 0;
 	case WM_MOUSELEAVE:
 		tracking_mouse = false;
@@ -77,28 +67,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEWHEEL:
 		init_shift(GET_KEYSTATE_WPARAM(wParam));
 		ui.mouse_wheel_turn(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
-		if (!ui.changed_area.empty()) paint(hWnd);
+		if (!ui.changed_area.empty()) ui.paint(hWnd);
 		return 0;
 	case WM_LBUTTONDOWN: case WM_RBUTTONDOWN: case WM_MBUTTONDOWN:
 		init_shift(wParam);
 		if (message == WM_LBUTTONDOWN) ui.mouse_button_left_down();
 		if (message == WM_RBUTTONDOWN) ui.mouse_button_right_down();
 		if (message == WM_MBUTTONDOWN) ui.mouse_button_middle_down();
-		if (!ui.changed_area.empty()) paint(hWnd);
+		if (!ui.changed_area.empty()) ui.paint(hWnd);
 		return 0;
 	case WM_LBUTTONUP: case WM_RBUTTONUP: case WM_MBUTTONUP:
 		init_shift(wParam);
 		if (message == WM_LBUTTONUP) ui.mouse_button_left_up();
 		if (message == WM_RBUTTONUP) ui.mouse_button_right_up();
 		if (message == WM_MBUTTONUP) ui.mouse_button_middle_up();
-		if (!ui.changed_area.empty()) paint(hWnd);
+		if (!ui.changed_area.empty()) ui.paint(hWnd);
 		return 0;
 	case WM_LBUTTONDBLCLK: case WM_RBUTTONDBLCLK: case WM_MBUTTONDBLCLK:
 		init_shift(wParam);
 		if (message == WM_LBUTTONDBLCLK) ui.mouse_button_left_down(true);
 		if (message == WM_RBUTTONDBLCLK) ui.mouse_button_right_down(true);
 		if (message == WM_MBUTTONDBLCLK) ui.mouse_button_middle_down(true);
-		if (!ui.changed_area.empty()) paint(hWnd);
+		if (!ui.changed_area.empty()) ui.paint(hWnd);
 		return 0;
 	case WM_KEYDOWN:
 		switch (wParam)
@@ -132,7 +122,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		default:
 			ui.key_down(wParam);
-			if (!ui.changed_area.empty()) paint(hWnd);
+			if (!ui.changed_area.empty()) ui.paint(hWnd);
 		}
 		return 0;
 	case WM_KEYUP:
@@ -140,13 +130,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_CHAR:
 		ui.key_press(wParam);
-		if (!ui.changed_area.empty()) paint(hWnd);
+		if (!ui.changed_area.empty()) ui.paint(hWnd);
 		return 0;
 	case WM_PAINT:
 	{
 		PAINTSTRUCT ps;
 		BeginPaint(hWnd, &ps);
-		paint(hWnd);
+		ui.paint(hWnd);
 		EndPaint(hWnd, &ps);
 		return 0;
 	}
@@ -159,7 +149,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 		case 1:
 			ui.run_timer1000();
-			if (!ui.changed_area.empty()) paint(hWnd);
+			if (!ui.changed_area.empty()) ui.paint(hWnd);
 			break;
 		case 2:
 			ui.run_timer250();
