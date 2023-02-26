@@ -70,8 +70,8 @@ _recognize::_recognize()
 			//			if (c == ' ') ShowMessage(IntToStr((int)size.cx));
 			//			if (size.cy != 13) ShowMessage(ss_+" "+IntToStr((int)size.cy));
 			if (size.x > 20) return;//что-то не то...
-			if ((size.x > bm_[nf].size.x) || (size.y > bm_[nf].size.y))
-				bm_[nf].resize({ std::max(size.x, bm_[nf].size.x), std::max(size.y, bm_[nf].size.y) });
+			if ((size.x > bm_[nf].get_size().x) || (size.y > bm_[nf].get_size().y))
+				bm_[nf].resize({ std::max(size.x, bm_[nf].get_size().x), std::max(size.y, bm_[nf].get_size().y) });
 			bm_[nf].clear({ 0 });
 			bm_[nf].text({ 0LL, 0LL }, ss_.data(), 8, 0xffffff, 0);
 			ZeroMemory(aa, sizeof(ushort) * size.x);
@@ -168,10 +168,10 @@ void _recognize::find_text13(uint c, int err)
 	int c2 = (c >> 16) & 255;
 
 	elem.clear();
-	i64 rx = image.size.x;
+	i64 rx = image.get_size().x;
 	ushort* lin = new ushort[rx];
 	ZeroMemory(lin, sizeof(ushort) * rx);
-	for (i64 j = image.size.y - 1; j >= 0; j--)
+	for (i64 j = image.get_size().y - 1; j >= 0; j--)
 	{
 		auto sl = image.scan_line(j);
 		i64 first = -1;
@@ -220,10 +220,10 @@ void _recognize::find_text13(uint c, int err)
 void _recognize::find_text13(uint c)
 {
 	elem.clear();
-	i64 rx = image.size.x;
+	i64 rx = image.get_size().x;
 	ushort* lin = new ushort[rx];
 	ZeroMemory(lin, sizeof(ushort) * rx);
-	for (i64 j = image.size.y - 1; j >= 0; j--)
+	for (i64 j = image.get_size().y - 1; j >= 0; j--)
 	{
 		auto sl = image.scan_line(j);
 		i64 first = -1;
@@ -650,7 +650,7 @@ void buy_stock(_ui_element* tt, bool buy)
 			}
 			return;
 		}
-		SetCursorPos((int)(recognize.offset.x + recognize.image.size.x - 23), (int)(recognize.offset.y - 15));
+		SetCursorPos((int)(recognize.offset.x + recognize.image.get_size().x - 23), (int)(recognize.offset.y - 15));
 		mouse_click(); // НЕЛЬЗЯ
 		n = 40;
 		return;

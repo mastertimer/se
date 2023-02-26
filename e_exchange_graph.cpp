@@ -196,7 +196,7 @@ void _e_exchange_graph::ris2(_trans tr)
 			double yy = a.y.max - (y - y_.min) * a.y.length() / (y_.max - y_.min);
 			ui->canvas.line({ a.x.min + dex, yy }, { a.x.max - dex, yy }, col_setka);
 			ui->canvas.text16({ std::max(a.x.min, 0.0) + 2, (i64)(yy - 6) }, double_to_string(y, 2), col_setka_font);
-			ui->canvas.text16({ std::min((i64)a.x.max, ui->canvas.size.x) - dex, (i64)(yy - 6) }, double_to_string(y, 2),
+			ui->canvas.text16({ std::min((i64)a.x.max, ui->canvas.get_size().x) - dex, (i64)(yy - 6) }, double_to_string(y, 2),
 				col_setka_font);
 		}
 	}
@@ -255,7 +255,7 @@ void _e_exchange_graph::ris2(_trans tr)
 						ii = (time_[i] / dele[ido + 1]) % ost[ido + 1];
 						s[1] = '0' + (ii % 10);
 						s[0] = '0' + (ii / 10);*/
-			ui->canvas.text16({ x - 11 + a.x.min, std::min((i64)a.y.max, ui->canvas.size.y) - 13 }, s, col_setka_font);
+			ui->canvas.text16({ x - 11 + a.x.min, std::min((i64)a.y.max, ui->canvas.get_size().y) - 13 }, s, col_setka_font);
 			ui->canvas.text16({ x - 11 + a.x.min, std::max(a.y.min, 0.0) }, s, col_setka_font);
 			continue;
 		}

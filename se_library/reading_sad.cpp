@@ -63,15 +63,16 @@ namespace
 
 	void find_separator(i64& sep1, i64& sep2)
 	{
-		if (image.size.empty()) return;
+		if (image.get_size().empty()) return;
 		auto sl = image.scan_line(0);
-		for (i64 i = 0; i < image.size.x; i++)
+		auto sx = image.get_size().x;
+		for (i64 i = 0; i < sx; i++)
 			if (sl[i].c != 0xffffffff)
 			{
 				sep1 = i;
 				break;
 			}
-		for (i64 i = sep1 + 1; i < image.size.x; i++)
+		for (i64 i = sep1 + 1; i < sx; i++)
 			if (sl[i].c != 0xffffffff)
 			{
 				sep2 = i;
@@ -175,7 +176,7 @@ std::optional<_supply_and_demand> read_sad_from_screen()
 	if (sep1 < 40 || sep2-sep1 < 60) goto err; // 10 000 000 должно поместиться
 	pr.time = time(0);
 
-	if (image.size.y < indent_from_above + step_height_line * size_offer * 2 - (step_height_line - font_height))
+	if (image.get_size().y < indent_from_above + step_height_line * size_offer * 2 - (step_height_line - font_height))
 		goto err;
 
 	for (i64 j = 0; j < size_offer * 2; j++)
