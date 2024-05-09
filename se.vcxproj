@@ -78,9 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -118,7 +120,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\library;library;se_library</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\mutator\library;library;se_library</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -135,7 +137,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\library;library;se_library</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\mutator\library;library;se_library</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,14 +147,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\library\basic.cpp" />
-    <ClCompile Include="..\library\e_terminal.cpp" />
-    <ClCompile Include="..\library\geometry.cpp" />
-    <ClCompile Include="..\library\graphics.cpp" />
-    <ClCompile Include="..\library\json.cpp" />
-    <ClCompile Include="..\library\multi_string.cpp" />
-    <ClCompile Include="..\library\ui.cpp" />
-    <ClCompile Include="..\library\win_basic.cpp" />
+    <ClCompile Include="..\mutator\library\basic.cpp" />
+    <ClCompile Include="..\mutator\library\e_terminal.cpp" />
+    <ClCompile Include="..\mutator\library\geometry.cpp" />
+    <ClCompile Include="..\mutator\library\graphics.cpp" />
+    <ClCompile Include="..\mutator\library\json.cpp" />
+    <ClCompile Include="..\mutator\library\multi_string.cpp" />
+    <ClCompile Include="..\mutator\library\ui.cpp" />
+    <ClCompile Include="..\mutator\library\win_basic.cpp" />
     <ClCompile Include="compressed_exchange_data.cpp" />
     <ClCompile Include="exchange_research.cpp" />
     <ClCompile Include="exchange_trade.cpp" />
@@ -167,15 +169,15 @@
     <ClCompile Include="se_library\reading_sad.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\library\basic.h" />
-    <ClInclude Include="..\library\e_terminal.h" />
-    <ClInclude Include="..\library\geometry.h" />
-    <ClInclude Include="..\library\graphics.h" />
-    <ClInclude Include="..\library\hash.h" />
-    <ClInclude Include="..\library\json.h" />
-    <ClInclude Include="..\library\multi_string.h" />
-    <ClInclude Include="..\library\ui.h" />
-    <ClInclude Include="..\library\win_basic.h" />
+    <ClInclude Include="..\mutator\library\basic.h" />
+    <ClInclude Include="..\mutator\library\e_terminal.h" />
+    <ClInclude Include="..\mutator\library\geometry.h" />
+    <ClInclude Include="..\mutator\library\graphics.h" />
+    <ClInclude Include="..\mutator\library\hash.h" />
+    <ClInclude Include="..\mutator\library\json.h" />
+    <ClInclude Include="..\mutator\library\multi_string.h" />
+    <ClInclude Include="..\mutator\library\ui.h" />
+    <ClInclude Include="..\mutator\library\win_basic.h" />
     <ClInclude Include="compressed_exchange_data.h" />
     <ClInclude Include="exchange_research.h" />
     <ClInclude Include="exchange_trade.h" />
